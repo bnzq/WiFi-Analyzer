@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pref_refresh_rate_options">
+        <item>@string/pref_refresh_rate_label_0</item>
+        <item>@string/pref_refresh_rate_label_2</item>
+        <item>@string/pref_refresh_rate_label_3</item>
+        <item>@string/pref_refresh_rate_label_5</item>
+        <item>@string/pref_refresh_rate_label_10</item>
+    </string-array>
+
+    <string-array name="pref_refresh_rate_values">
+        <item>@string/pref_refresh_rate_0</item>
+        <item>@string/pref_refresh_rate_2</item>
+        <item>@string/pref_refresh_rate_3</item>
+        <item>@string/pref_refresh_rate_5</item>
+        <item>@string/pref_refresh_rate_10</item>
+
+    </string-array>
+</resources>
