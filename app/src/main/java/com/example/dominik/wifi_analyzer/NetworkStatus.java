@@ -14,6 +14,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,9 @@ public class NetworkStatus extends Fragment
     {
         wifiManager=(WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
         wifiReceiver = new WifiScanReceiver();
+
+        enableWifi();
+
         wifiManager.startScan();
 
         super.onCreate(savedInstanceState);
@@ -139,15 +143,23 @@ public class NetworkStatus extends Fragment
         }
     }
 
-    //TODO - implements turn on wifi if disabled
     //update network status for each signal
     public void updateNetworkStatus()
     {
+        enableWifi();
+
         wifiManager.startScan();
 
         List<ScanResult> wifiScanList = wifiManager.getScanResults();
         List<String[]> list = new ArrayList<String[]>();
 
+
+        if(wifiScanList == null)
+        {
+            return;
+        }
+
+        //add each []wifiDetails to list
         for (int i = 0; i < wifiScanList.size(); i++)
         {
             String [] wifiDetails = new String[NetworkStatusAdapter.SIZE_TAB];
@@ -199,6 +211,15 @@ public class NetworkStatus extends Fragment
 
     }
 
+    //enable wifi if is disabled
+    private void enableWifi()
+    {
+        if (wifiManager.isWifiEnabled() == false)
+        {
+            wifiManager.setWifiEnabled(true);
+        }
+    }
+
 //update if AS FAST AS POSSIBLE
     private class WifiScanReceiver extends BroadcastReceiver
     {
@@ -211,6 +232,5 @@ public class NetworkStatus extends Fragment
 
         }
     }
-
 
 }
