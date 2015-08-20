@@ -110,7 +110,8 @@ public class NetworkStatus extends Fragment
     {
         getActivity().unregisterReceiver(wifiReceiver);
 
-        if (timer != null){
+        if (timer != null)
+        {
             timer.cancel();
             timer.purge();
             timer = null;

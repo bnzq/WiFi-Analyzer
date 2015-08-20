@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="green" type="color">#117711</item>
+    <color name="pressed_color">#55bb55</color>
+    <color name="default_color">#117711</color>
 </resources>

@@ -26,7 +26,7 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
 
     public NetworkStatusAdapter(Context context, List<String[]> objects)
     {
-        super(context, R.layout.network_status, objects);
+        super(context, R.layout.network_status_listview, objects);
         this.context = context;
         this.values = objects;
     }
@@ -37,7 +37,7 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
         LayoutInflater inflater = (LayoutInflater) getContext().
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.network_status, parent, false);
+        View view = inflater.inflate(R.layout.network_status_listview, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
@@ -71,8 +71,8 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
         public final TextView levelView;
         public final TextView timestampView;
 
-        public ViewHolder(View view) {
-
+        public ViewHolder(View view)
+        {
             bssidView = (TextView) view.findViewById(R.id.bssid_textView);
             ssidView = (TextView) view.findViewById(R.id.ssid_textView);
             capabilitiesView = (TextView) view.findViewById(R.id.capabilities_textView);

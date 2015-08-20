@@ -133,13 +133,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             switch (position) {
                 case 0:
                     // Top Rated fragment activity
-                    return new NetworkStatus();
+                    return new Tab3Fragment();
                 case 1:
                     // Games fragment activity
-                    return new Tab2Fragment();
+                    return new NetworkStatus();
                 case 2:
                     // Movies fragment activity
-                    return new Tab3Fragment();
+                    return new HomeTesting();
                 case 3:
                     // Movies fragment activity
                     return new Tab4Fragment();

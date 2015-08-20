@@ -2,7 +2,15 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle</item>
+    </style>
+
+    <style name="ActionBarTabStyle" parent="Widget.AppCompat.ActionBar.TabView">
+        <item name="android:paddingLeft">2dip</item>
+        <item name="android:paddingRight">2dip</item>
+        <item name="android:minWidth">40dip</item>
+        <item name="android:layout_width">wrap_content</item>
+
     </style>
 
     <!-- Style for all networks -->
