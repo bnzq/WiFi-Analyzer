@@ -2,25 +2,68 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle</item>
         <item name="actionBarTabStyle">@style/ActionBarTabStyle</item>
+        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleText</item>
+        <item name="titleTextStyle">@style/AppTheme.ActionBar.TitleText</item>
+        <item name="android:height">@dimen/bar_height</item>
+        <item name="height">@dimen/bar_height</item>
+        <item name="android:actionBarSize">@dimen/action_bar_size</item>
+        <item name="actionBarSize">@dimen/action_bar_size</item>
     </style>
 
     <style name="ActionBarTabStyle" parent="Widget.AppCompat.ActionBar.TabView">
         <item name="android:paddingLeft">2dip</item>
         <item name="android:paddingRight">2dip</item>
         <item name="android:minWidth">40dip</item>
-        <item name="android:layout_width">wrap_content</item>
-
     </style>
 
-    <!-- Style for all networks -->
+    <style name="AppTheme.ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">@dimen/bar_text_size</item>
+    </style>
+
     <style name="NetworksListStyle">
 
     </style>
 
-    <style name="FontNetworkStatus" parent="@android:style/TextAppearance">
-        <item name="android:textColor">#FFFFFF</item>
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/dark_yellow</item>
+    </style>
+
+    <style name="NT_FontNetworkStatus" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">10dp</item>
     </style>
 
+    <style name="HT_FontRoomName" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/dark_white</item>
+        <item name="android:textSize">17dp</item>
+    </style>
+
+    <style name="HT_FontStaticStrengthSpeed" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/dark_white</item>
+        <item name="android:textSize">10dp</item>
+    </style>
+
+    <style name="HT_FontStaticStrengthSpeedUnits" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/dark_white</item>
+        <item name="android:textSize">9dp</item>
+    </style>
+
+    <style name="HT_FontSpeedStrengthNow" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/dark_yellow</item>
+        <item name="android:textSize">13dp</item>
+    </style>
+
+    <style name="HT_FontSpeedStrengthLast" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/dark_white</item>
+        <item name="android:textSize">9dp</item>
+    </style>
+
+    <style name="HT_FontBar" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">10dp</item>
+    </style>
 </resources>

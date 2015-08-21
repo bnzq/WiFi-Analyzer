@@ -3,33 +3,169 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="horizontal"
-              android:background="@drawable/bg_selector">
-
+              android:padding="7dp"
+              android:background="@drawable/bg_selector"
+    >
+    <!--with RoomName & lay - Ver // TextView + Hor-->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="3dp"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style ="@style/FontNetworkStatus"
+            style ="@style/HT_FontRoomName"
             android:text=""
-            android:id="@+id/room_name_textView"/>
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/room_name_textView"
+            />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style ="@style/FontNetworkStatus"
-            android:text=""
-            android:id="@+id/link_speed_textView"/>
+        <!--with 2 lay-s - Hor // Hor + Hor-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            >
+            <!--with Now & lay - Hor // TextView + Ver-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style ="@style/FontNetworkStatus"
-            android:text=""
-            android:id="@+id/rssi_textView"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    >
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        style ="@style/HT_FontStaticStrengthSpeed"
+                        android:text= "@string/ht_strength_static_textView"
+                        android:id="@+id/ht_strength_static_textView"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        style ="@style/HT_FontStaticStrengthSpeedUnits"
+                        android:text= "@string/ht_strength_static_units_textView"
+                        android:id="@+id/ht_strength_units_textView"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
+
+
+                <!--with Strength & Speed - Ver // TextView + TextView-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style ="@style/HT_FontSpeedStrengthNow"
+                        android:text=""
+                        android:id="@+id/rssi_now_textView"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style ="@style/HT_FontSpeedStrengthLast"
+                        android:text=""
+                        android:id="@+id/rssi_last_textView"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--with Last & lay - Hor // TextView + Ver-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                    >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    >
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    style ="@style/HT_FontStaticStrengthSpeed"
+                    android:text= "@string/ht_speed_static_textView"
+                    android:id="@+id/ht_last_static_textView"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp"
+                    android:layout_gravity="center"
+                    />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        style ="@style/HT_FontStaticStrengthSpeedUnits"
+                        android:text= "@string/ht_speed_static_units_textView"
+                        android:id="@+id/ht_speed_units_textView"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        />
+
+              </LinearLayout>
+
+                <!--with Strength & Speed - Ver // TextView + TextView-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style ="@style/HT_FontSpeedStrengthNow"
+                        android:text=""
+                        android:id="@+id/link_speed_now_textView"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style ="@style/HT_FontSpeedStrengthLast"
+                        android:text=""
+                        android:id="@+id/link_speed_last_textView"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

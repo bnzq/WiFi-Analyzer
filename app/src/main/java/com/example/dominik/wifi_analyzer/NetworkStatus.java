@@ -11,22 +11,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static android.R.layout.simple_list_item_1;
 
 public class NetworkStatus extends Fragment
 {
@@ -44,6 +43,9 @@ public class NetworkStatus extends Fragment
 
     Button refreshButton;
     Button refreshRateButton;
+
+    TextView connectedInfoView;
+    TextView intervalView;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -82,6 +84,9 @@ public class NetworkStatus extends Fragment
         refreshButton = (Button) rootView.findViewById(R.id.refresh_button);
         refreshRateButton = (Button) rootView.findViewById(R.id.scanning_time_button);
 
+        connectedInfoView = (TextView) rootView.findViewById(R.id.ns_connected_textview);
+        intervalView = (TextView) rootView.findViewById(R.id.ns_interval_textview);
+
         refreshButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -106,7 +111,7 @@ public class NetworkStatus extends Fragment
     }
 
     //unregister receiver & close timer
-    public void setParametersReceiverBefore()
+    private void setParametersReceiverBefore()
     {
         getActivity().unregisterReceiver(wifiReceiver);
 
@@ -119,7 +124,7 @@ public class NetworkStatus extends Fragment
     }
 
     //register receiver & schedule timer
-    public void setParametersReceiverAfter()
+    private void setParametersReceiverAfter()
     {
         getActivity().registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
@@ -144,8 +149,17 @@ public class NetworkStatus extends Fragment
         }
     }
 
+    //update view in simple info bar
+    private void updaateInfoBar()
+    {
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        connectedInfoView.setText(String.format(getActivity().getResources().getString(R.string.ht_connected_bar),wifiInfo.getSSID()));
+        intervalView.setText(String.format(getActivity().getResources().getString(R.string.ns_interval_bar), refreshRateInSec));
+
+    }
+
     //update network status for each signal
-    public void updateNetworkStatus()
+    private void updateNetworkStatus()
     {
         enableWifi();
 
@@ -179,6 +193,8 @@ public class NetworkStatus extends Fragment
 
         mNetworkStatusAdapter = new NetworkStatusAdapter(getActivity().getApplicationContext(), list);
         mListView.setAdapter(mNetworkStatusAdapter);
+
+        updaateInfoBar();
     }
 
     //create dialog to choice refresh interval
@@ -188,7 +204,7 @@ public class NetworkStatus extends Fragment
         final String[] stringsRefreshRateOptions = getResources().getStringArray(R.array.pref_refresh_rate_options);
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setTitle(R.string.title_dialog_refresh_rate);
+        alertDialog.setTitle(R.string.ns_title_dialog_refresh_rate);
 
         alertDialog.setSingleChoiceItems(stringsRefreshRateOptions, 1,
                 new DialogInterface.OnClickListener()

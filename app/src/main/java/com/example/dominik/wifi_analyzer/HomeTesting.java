@@ -48,6 +48,8 @@ public class HomeTesting extends Fragment
     Button defButton;
     Button testButton;
 
+    TextView connectedView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -70,6 +72,7 @@ public class HomeTesting extends Fragment
         editButton = (Button) rootView.findViewById(R.id.edit_room_button);
         defButton = (Button) rootView.findViewById(R.id.def_room_button);
         testButton = (Button) rootView.findViewById(R.id.home_testing_test_button);
+        connectedView = (TextView) rootView.findViewById(R.id.ht_connected_textview);
 
         mListView = (ListView) rootView.findViewById(R.id.home_rooms_listview);
 
@@ -90,8 +93,7 @@ public class HomeTesting extends Fragment
             @Override
             public void onClick(View v)
             {
-                if (positionSelected != -1)
-                {
+                if (positionSelected != -1) {
                     testRoom(nameSelected);
                     updateTestingRooms();
                 }
@@ -166,6 +168,12 @@ public class HomeTesting extends Fragment
         myDBHandler.editRoomInfo(nameRoom, roomInfo);
     }
 
+    private void updateConnectedView()
+    {
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        connectedView.setText(String.format(getActivity().getResources().getString(R.string.ht_connected_bar),wifiInfo.getSSID()));
+    }
+
     //update rooms from datebase to view
     private void updateTestingRooms()
     {
@@ -184,6 +192,8 @@ public class HomeTesting extends Fragment
                 wifiDetails[HomeTestingAdapter.ROOM_NAME_TAB] = roomInfoList.get(i).getRoomName();
                 wifiDetails[HomeTestingAdapter.LINK_SPEED_TAB] = Float.toString(roomInfoList.get(i).getLinkSpeed());
                 wifiDetails[HomeTestingAdapter.RSSI_TAB] = Float.toString(roomInfoList.get(i).getRssi());
+                wifiDetails[HomeTestingAdapter.LAST_LINK_SPEED_TAB] = Float.toString(roomInfoList.get(i).getLastLinkSpeed());;
+                wifiDetails[HomeTestingAdapter.LAST_RSSI_TAB] = Float.toString(roomInfoList.get(i).getLastRssi());
             }
 
             list.add(wifiDetails);
@@ -192,6 +202,7 @@ public class HomeTesting extends Fragment
         mHomeTestingAdapter = new HomeTestingAdapter(getActivity().getApplicationContext(), list);
         mListView.setAdapter(mHomeTestingAdapter);
 
+        updateConnectedView();
     }
 
     //enable wifi if is disabled
@@ -299,6 +310,8 @@ public class HomeTesting extends Fragment
         public static final String COLUMN_ROOM_NAME = "roomname";
         public static final String COLUMN_LINK_SPEED = "linkspeed";
         public static final String COLUMN_RSSI = "rssi";
+        public static final String COLUMN_LAST_LINK_SPEED = "lastlinkspeed";
+        public static final String COLUMN_LAST_RSSI = "lastrssi";
 
         public MyDBHandler(Context context)
         {
@@ -313,7 +326,9 @@ public class HomeTesting extends Fragment
                             + COLUMN_ID + " INTEGER PRIMARY KEY, "
                             + COLUMN_ROOM_NAME + " TEXT, "
                             + COLUMN_LINK_SPEED + " REAL, "
-                            + COLUMN_RSSI + " REAL"
+                            + COLUMN_RSSI + " REAL, "
+                            + COLUMN_LAST_LINK_SPEED + " REAL, "
+                            + COLUMN_LAST_RSSI + " REAL"
                             + ")";
 
             db.execSQL(CREATE_TABLE_ROOMS);
@@ -332,6 +347,8 @@ public class HomeTesting extends Fragment
             values.put(COLUMN_ROOM_NAME, roomInfo.getRoomName());
             values.put(COLUMN_LINK_SPEED, roomInfo.getLinkSpeed());
             values.put(COLUMN_RSSI, roomInfo.getRssi());
+            values.put(COLUMN_LAST_LINK_SPEED, roomInfo.getLastLinkSpeed());
+            values.put(COLUMN_LAST_RSSI, roomInfo.getLastRssi());
 
             SQLiteDatabase db = this.getWritableDatabase();
             db.insert(TABLE_ROOMS, null, values);
@@ -342,12 +359,26 @@ public class HomeTesting extends Fragment
         public void deleteAllAndRestoreDefaultRooms()
         {
             final int sizeDefaultRooms = 5;
+            final String [] roomTab1 = {
+                    "OFFICE",
+                    "BEDROOM",
+                    "LIVING ROOM",
+                    "KITCHEN",
+                    "BATHROOM"
+            };
+
+            for (int i = 0; i < sizeDefaultRooms; i++ )
+            {
+                myDBHandler.addRoomInfo(new RoomInfo(0,0,roomTab1[i]));
+            }
 
             final String query[] = new String[]{
                     MyDBHandler.COLUMN_ID,
                     MyDBHandler.COLUMN_ROOM_NAME,
                     MyDBHandler.COLUMN_LINK_SPEED,
                     MyDBHandler.COLUMN_RSSI,
+                    MyDBHandler.COLUMN_LAST_LINK_SPEED,
+                    MyDBHandler.COLUMN_LAST_RSSI
             };
 
             SQLiteDatabase db = this.getWritableDatabase();
@@ -390,6 +421,8 @@ public class HomeTesting extends Fragment
                     MyDBHandler.COLUMN_ROOM_NAME,
                     MyDBHandler.COLUMN_LINK_SPEED,
                     MyDBHandler.COLUMN_RSSI,
+                    MyDBHandler.COLUMN_LAST_LINK_SPEED,
+                    MyDBHandler.COLUMN_LAST_RSSI
             };
 
             SQLiteDatabase db = this.getWritableDatabase();
@@ -414,6 +447,8 @@ public class HomeTesting extends Fragment
                 roomInfoHelp.setRoomName(cursor.getString(1));
                 roomInfoHelp.setLinkSpeed(cursor.getFloat(2));
                 roomInfoHelp.setRssi(cursor.getFloat(3));
+                roomInfoHelp.setLastLinkSpeed(cursor.getFloat(4));
+                roomInfoHelp.setLastRssi(cursor.getFloat(5));
 
                 result.add(roomInfoHelp);
             }
@@ -455,12 +490,45 @@ public class HomeTesting extends Fragment
             return result;
         }
 
+        //find room from datebase
+        public RoomInfo findRoomInfo(String roomName)
+        {
+            String query = "Select * FROM " + TABLE_ROOMS + " WHERE " + COLUMN_ROOM_NAME + " =  \"" + roomName + "\"";
+
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            Cursor cursor = db.rawQuery(query, null);
+
+            RoomInfo roomInfoHelp = new RoomInfo();
+
+            if (cursor.moveToFirst()) {
+                cursor.moveToFirst();
+                roomInfoHelp.setId(cursor.getInt(0));
+                roomInfoHelp.setRoomName(cursor.getString(1));
+                roomInfoHelp.setLinkSpeed(cursor.getFloat(2));
+                roomInfoHelp.setRssi(cursor.getFloat(3));
+                roomInfoHelp.setLastLinkSpeed(cursor.getFloat(4));
+                roomInfoHelp.setLastRssi(cursor.getFloat(5));
+
+                cursor.close();
+            } else {
+                roomInfoHelp = null;
+            }
+            db.close();
+
+            return  roomInfoHelp;
+        }
+
         //edit all columns where RoomName
         public boolean editRoomInfo(String roomName, RoomInfo roomInfo)
         {
             boolean result = false;
 
             final String query = "Select * from " + TABLE_ROOMS + " where " + COLUMN_ROOM_NAME + " =  \"" + roomName + "\"";
+
+            RoomInfo roomInfoToLast = findRoomInfo(roomName);
+            roomInfo.setLastLinkSpeed(roomInfoToLast.getLinkSpeed());
+            roomInfo.setLastRssi(roomInfoToLast.getRssi());
 
             SQLiteDatabase db = this.getWritableDatabase();
 
@@ -476,6 +544,8 @@ public class HomeTesting extends Fragment
                 values.put(COLUMN_ROOM_NAME, roomInfo.getRoomName());
                 values.put(COLUMN_LINK_SPEED, roomInfo.getLinkSpeed());
                 values.put(COLUMN_RSSI, roomInfo.getRssi());
+                values.put(COLUMN_LAST_LINK_SPEED, roomInfo.getLastLinkSpeed());
+                values.put(COLUMN_LAST_RSSI, roomInfo.getLastRssi());
 
                 db.update(TABLE_ROOMS, values, COLUMN_ID + " = " + String.valueOf(roomInfoHelp.getId()), null);
 
@@ -522,10 +592,21 @@ public class HomeTesting extends Fragment
         private String roomName;
         private float linkSpeed;
         private float rssi;
+
+        private float lastRssi;
+        private float lastLinkSpeed;
+
         private int id;
+
+
 
         public RoomInfo()
         {
+            this.rssi = 0.0f;
+            this.linkSpeed = 0.0f;
+            this.roomName = "";
+            this.lastLinkSpeed = 0.0f;
+            this.lastRssi = 0.0f;
         }
 
         public RoomInfo(float rssi, float linkSpeed, String roomName)
@@ -533,6 +614,37 @@ public class HomeTesting extends Fragment
             this.rssi = rssi;
             this.linkSpeed = linkSpeed;
             this.roomName = roomName;
+            this.lastLinkSpeed = 0.0f;
+            this.lastRssi = 0.0f;
+        }
+
+        public RoomInfo(float rssi, float linkSpeed, String roomName,float lastRssi, float lastLinkSpeed)
+        {
+            this.rssi = rssi;
+            this.linkSpeed = linkSpeed;
+            this.roomName = roomName;
+            this.lastLinkSpeed = lastLinkSpeed;
+            this.lastRssi = lastRssi;
+        }
+
+        public float getLastRssi()
+        {
+            return lastRssi;
+        }
+
+        public void setLastRssi(float lastRssi)
+        {
+            this.lastRssi = lastRssi;
+        }
+
+        public float getLastLinkSpeed()
+        {
+            return lastLinkSpeed;
+        }
+
+        public void setLastLinkSpeed(float lastLinkSpeed)
+        {
+            this.lastLinkSpeed = lastLinkSpeed;
         }
 
         public int getId()

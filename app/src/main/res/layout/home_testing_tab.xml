@@ -3,48 +3,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/green" >
+    android:background="@color/primary_dark_material_dark"
+    >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/dark_bar"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="14dp"
+            android:id="@+id/ht_connected_textview"
+            style="@style/HT_FontBar"
+            android:text="@string/ht_connected_bar"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="@color/primary_dark_material_light"
+        >
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/home_testing_add"
-            android:id="@+id/add_room_button"/>
+            android:text="@string/ht_add_button"
+            android:id="@+id/add_room_button"
+            />
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/home_testing_edit"
-            android:id="@+id/edit_room_button"/>
+            android:text="@string/ht_edit_button"
+            android:id="@+id/edit_room_button"
+            />
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/home_testing_del"
-            android:id="@+id/del_room_button"/>
+            android:text="@string/ht_del_button"
+            android:id="@+id/del_room_button"
+            />
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/home_testing_def"
-            android:id="@+id/def_room_button"/>
+            android:text="@string/ht_def_button"
+            android:id="@+id/def_room_button"
+            />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/home_testing_test"
-            android:layout_alignParentRight="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/ht_test_button"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:id="@+id/home_testing_test_button"/>
+            android:layout_marginRight="5dp"
+            android:id="@+id/home_testing_test_button"
+            />
 
     </LinearLayout>
 
@@ -53,6 +78,7 @@
         android:id="@+id/home_rooms_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null" />
+        android:divider="@null"
+        />
 
 </LinearLayout>
