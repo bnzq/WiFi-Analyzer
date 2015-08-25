@@ -9,8 +9,8 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="ns_refresh_button">Refresh</string>
-    <string name="ns_refresh_rate_button">Scanning time</string>
+    <string name="ns_refresh_button">R</string>
+    <string name="ns_refresh_rate_button">ST</string>
 
     <string name="pref_refresh_rate_label">Refresh Rate</string>
     <string name="pref_refresh_rate_key" translatable="false">refreshRate</string>
@@ -28,8 +28,22 @@
     <string name="ns_title_dialog_refresh_rate">Select automatic scanning time (s)</string>
     <string name="title_activity_settings">Settings</string>
 
-    <string name="ht_connected_bar">Connected: %1$s</string>
+    <string name="ns_ssid_bssid_textview">%1$s [%2$s] </string>
+
+    <string name="ns_percent_textView">%1$s %%</string>
+    <string name="ns_Mbps_textView">%1$s Mbps</string>
+
+    <string name="ns_channel_static_textView">C:</string>
+    <string name="ns_strength_percent_static_textView">S:</string>
+    <string name="ns_frequency_static_textView">F:</string>
+
+    <string name="ns_capabilities_textView">Encryption: %1$s</string>
+
+    <string name="connected_bar">Connected: %1$s</string>
     <string name="ns_interval_bar">Interval: %1$s s</string>
+    <string name="ns_ip">IP: %1$s </string>
+    <string name="ns_speed">Speed: %1$s Mbps</string>
+    <string name="ns_number_of_available_network">Wireless networks: %1$s</string>
 
     <string name="ht_add_button">Add</string>
     <string name="ht_edit_button">Edit</string>
@@ -39,11 +53,8 @@
 
     <string name="ht_strength_static_textView">STRENGTH</string>
     <string name="ht_speed_static_textView">SPEED</string>
-    <string name="ht_strength_static_units_textView">[DBm]</string>
-    <string name="ht_speed_static_units_textView">[Mbps]</string>
 
-
-    <string name="hta_now_to_udate">Now: %1$s</string>
-    <string name="hta_last_to_udate">Last: %1$s</string>
+    <string name="ht_now_static">Now: </string>
+    <string name="ht_last_static">Last: </string>
 
 </resources>

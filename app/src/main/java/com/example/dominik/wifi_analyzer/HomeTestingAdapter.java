@@ -2,20 +2,14 @@ package com.example.dominik.wifi_analyzer;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
-
-/**
- * Created by Dominik on 8/19/2015.
- */
-
-//TODO implements adapter by objects
 
 public class HomeTestingAdapter extends ArrayAdapter<String[]>
 {
@@ -58,37 +52,61 @@ public class HomeTestingAdapter extends ArrayAdapter<String[]>
         for (int i = 0; i < this.values.size(); i++)
         {
             String[] tab = getItem(position);
-            Resources res = context.getResources();
 
-            String last_link_speed = String.format(res.getString(R.string.hta_last_to_udate), tab[LAST_LINK_SPEED_TAB]);
-            String last_rssi = String.format(res.getString(R.string.hta_last_to_udate),tab[LAST_RSSI_TAB]);
-
-            String link_speed = String.format(res.getString(R.string.hta_now_to_udate), tab[LINK_SPEED_TAB]);
-            String rssi = String.format(res.getString(R.string.hta_now_to_udate), tab[RSSI_TAB]);
+            int qualityLast = Utility.convertRssiToQuality(Float.valueOf(tab[LAST_RSSI_TAB]).intValue());
+            int qualityNow = Utility.convertRssiToQuality(Float.valueOf(tab[RSSI_TAB]).intValue());
 
             viewHolder.roomNameView.setText(tab[ROOM_NAME_TAB]);
-            viewHolder.linkSpeedView.setText(link_speed);
-            viewHolder.rssiView.setText(rssi);
-            viewHolder.lastLinkSpeedView.setText(last_link_speed);
-            viewHolder.lastRssiView.setText(last_rssi);
+
+            viewHolder.progressBarQualityNow.setProgress(qualityNow);
+            viewHolder.progressBarQualityLast.setProgress(qualityLast);
+            viewHolder.progressBarQualityNowView.setText(String.format(
+                    context.getResources().getString(R.string.ns_percent_textView), qualityNow));
+            viewHolder.progressBarQualityLastView.setText(String.format(
+                    context.getResources().getString(R.string.ns_percent_textView), qualityLast));
+
+            viewHolder.progressBarSpeedNow.setProgress(Float.valueOf(tab[LINK_SPEED_TAB]).intValue());
+            viewHolder.progressBarSpeedLast.setProgress(Float.valueOf(tab[LAST_LINK_SPEED_TAB]).intValue());
+            viewHolder.progressBarSpeedNowView.setText(String.format(
+                    context.getResources().getString(R.string.ns_Mbps_textView), Float.valueOf(tab[LINK_SPEED_TAB]).intValue()));
+            viewHolder.progressBarSpeedLastView.setText(String.format(
+                    context.getResources().getString(R.string.ns_Mbps_textView), Float.valueOf(tab[LAST_LINK_SPEED_TAB]).intValue()));
         }
     }
 
     public static class ViewHolder
     {
         public final TextView roomNameView;
-        public final TextView linkSpeedView;
-        public final TextView rssiView;
-        public final TextView lastLinkSpeedView;
-        public final TextView lastRssiView;
+        public final ProgressBar progressBarSpeedLast;
+        public final ProgressBar progressBarSpeedNow;
+        public final ProgressBar progressBarQualityLast;
+        public final ProgressBar progressBarQualityNow;
+        public final TextView progressBarQualityNowView;
+        public final TextView progressBarQualityLastView;
+        public final TextView progressBarSpeedNowView;
+        public final TextView progressBarSpeedLastView;
+
+
 
         public ViewHolder(View view)
         {
             roomNameView = (TextView) view.findViewById(R.id.room_name_textView);
-            linkSpeedView = (TextView) view.findViewById(R.id.link_speed_now_textView);
-            rssiView = (TextView) view.findViewById(R.id.rssi_now_textView);
-            lastLinkSpeedView = (TextView) view.findViewById(R.id.link_speed_last_textView);
-            lastRssiView = (TextView) view.findViewById(R.id.rssi_last_textView);
+
+            progressBarQualityNow = (ProgressBar) view.findViewById(R.id.ht_quality_progressbar_now);
+            progressBarQualityLast = (ProgressBar) view.findViewById(R.id.ht_quality_progressbar_last);
+            progressBarSpeedNow = (ProgressBar) view.findViewById(R.id.ht_speed_progressbar_now);
+            progressBarSpeedLast = (ProgressBar) view.findViewById(R.id.ht_speed_progressbar_last);
+
+            progressBarQualityNowView = (TextView) view.findViewById(R.id.ht_strength_percent_progressbar_now_textView);
+            progressBarQualityLastView = (TextView) view.findViewById(R.id.ht_strength_percent_progressbar_last_textView);
+            progressBarSpeedNowView = (TextView) view.findViewById(R.id.ht_speed_percent_progressbar_now_textView3);
+            progressBarSpeedLastView = (TextView) view.findViewById(R.id.ht_speed_percent_progressbar_last_textView);
+
+            progressBarQualityNow.setMax(100);
+            progressBarQualityLast.setMax(100);
+            progressBarSpeedNow.setMax(54);
+            progressBarSpeedLast.setMax(54);
+
         }
     }
 }

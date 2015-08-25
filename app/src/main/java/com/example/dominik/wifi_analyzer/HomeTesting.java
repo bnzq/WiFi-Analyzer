@@ -1,8 +1,3 @@
-
-/**
- * Created by Dominik on 7/15/2015.
- */
-
 package com.example.dominik.wifi_analyzer;
 
 import android.app.AlertDialog;
@@ -28,7 +23,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class HomeTesting extends Fragment
 {
@@ -168,10 +162,11 @@ public class HomeTesting extends Fragment
         myDBHandler.editRoomInfo(nameRoom, roomInfo);
     }
 
-    private void updateConnectedView()
+    //update info about connected info in simple bar
+    private void updateConnectedViewSimpleBar()
     {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        connectedView.setText(String.format(getActivity().getResources().getString(R.string.ht_connected_bar),wifiInfo.getSSID()));
+        connectedView.setText(String.format(getActivity().getResources().getString(R.string.connected_bar),wifiInfo.getSSID()));
     }
 
     //update rooms from datebase to view
@@ -202,7 +197,7 @@ public class HomeTesting extends Fragment
         mHomeTestingAdapter = new HomeTestingAdapter(getActivity().getApplicationContext(), list);
         mListView.setAdapter(mHomeTestingAdapter);
 
-        updateConnectedView();
+        updateConnectedViewSimpleBar();
     }
 
     //enable wifi if is disabled
@@ -215,7 +210,8 @@ public class HomeTesting extends Fragment
     }
 
     //create dialog to add new room and add created room to datebase
-    private Dialog createAddRoomDialog() {
+    private Dialog createAddRoomDialog()
+    {
 
         final String title = "Add Room";
         final String message = "Room Name: ";
@@ -254,7 +250,8 @@ public class HomeTesting extends Fragment
     }
 
     //create dialog to edit room and edit room in datebase
-    private Dialog createEditRoomDialog() {
+    private Dialog createEditRoomDialog()
+    {
 
         final String title = "Edit Room";
         final String message = "New Room Name: ";

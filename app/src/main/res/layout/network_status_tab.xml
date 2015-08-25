@@ -15,19 +15,24 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="14dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
             android:id="@+id/ns_connected_textview"
             style="@style/HT_FontBar"
-            android:text="@string/ht_connected_bar"
+            android:text="@string/connected_bar"
             android:layout_alignParentLeft="true"
+            android:padding="2dp"
             />
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="14dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
             android:id="@+id/ns_interval_textview"
             style="@style/HT_FontBar"
             android:text="@string/ns_interval_bar"
             android:layout_alignParentRight="true"
+            android:padding="2dp"
             />
 
     </RelativeLayout>
@@ -35,29 +40,82 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:background="@color/primary_dark_material_light"
-        android:padding="5dp"
+        android:weightSum="1"
         >
 
-        <Button
-            android:id="@+id/refresh_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ns_refresh_button"
-            android:layout_gravity="center_horizontal"
-            />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ns_ip_textView"
+                android:text="ip"
+                android:padding="2dp"
+                style="@style/HT_FontBar"
+                android:singleLine="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ns_speed_textView"
+                android:padding="2dp"
+                android:text="speed"
+                style="@style/HT_FontBar"
+                android:singleLine="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ns_number_of_available_network_textView"
+                android:padding="2dp"
+                style="@style/HT_FontBar"
+                android:text="number"
+                android:singleLine="true"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:weightSum="1"
+            >
+
+            <Button
+                android:id="@+id/refresh_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/ns_refresh_button"
+                android:padding="2dip"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="0.5"
+                />
+
+            <Button
+                android:id="@+id/scanning_time_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/ns_refresh_rate_button"
+                android:padding="2dip"
+                android:layout_alignParentRight="true"
+                android:layout_weight="0.5"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:orientation="vertical"
-        android:layout_weight="1"
-        >
-
-        <ListView
+    <ListView
             style="@style/NetworksListStyle"
             android:id="@+id/network_status_listview"
             android:layout_width="match_parent"
@@ -66,25 +124,4 @@
             android:dividerHeight="1px"
             />
 
-    </LinearLayout>
-
-    <View style="@style/Divider"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:gravity="center"
-        android:background="@color/primary_dark_material_light"
-        >
-
-
-        <Button
-            android:id="@+id/scanning_time_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ns_refresh_rate_button"
-            />
-
-    </LinearLayout>
 </LinearLayout>

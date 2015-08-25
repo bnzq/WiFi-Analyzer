@@ -1,7 +1,3 @@
-/**
- * Created by Dominik on 7/15/2015.
- */
-
 package com.example.dominik.wifi_analyzer;
 
 import android.app.AlertDialog;
@@ -10,11 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +44,9 @@ public class NetworkStatus extends Fragment
 
     TextView connectedInfoView;
     TextView intervalView;
+    TextView ipView;
+    TextView speedView;
+    TextView wirelessNetworks;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -86,6 +87,9 @@ public class NetworkStatus extends Fragment
 
         connectedInfoView = (TextView) rootView.findViewById(R.id.ns_connected_textview);
         intervalView = (TextView) rootView.findViewById(R.id.ns_interval_textview);
+        ipView = (TextView) rootView.findViewById(R.id.ns_ip_textView);
+        speedView = (TextView) rootView.findViewById(R.id.ns_speed_textView);
+        wirelessNetworks = (TextView) rootView.findViewById(R.id.ns_number_of_available_network_textView);
 
         refreshButton.setOnClickListener(new View.OnClickListener()
         {
@@ -101,7 +105,7 @@ public class NetworkStatus extends Fragment
             @Override
             public void onClick(View v)
             {
-                createDialog();
+                createRefreshIntervalDialog();
             }
         });
 
@@ -150,12 +154,16 @@ public class NetworkStatus extends Fragment
     }
 
     //update view in simple info bar
-    private void updaateInfoBar()
+    private void updateInfoBar(int size)
     {
+        Resources resources = getResources();
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        connectedInfoView.setText(String.format(getActivity().getResources().getString(R.string.ht_connected_bar),wifiInfo.getSSID()));
-        intervalView.setText(String.format(getActivity().getResources().getString(R.string.ns_interval_bar), refreshRateInSec));
 
+        connectedInfoView.setText(String.format(resources.getString(R.string.connected_bar), wifiInfo.getSSID()));
+        intervalView.setText(String.format(resources.getString(R.string.ns_interval_bar), refreshRateInSec));
+        ipView.setText(String.format(resources.getString(R.string.ns_ip), Formatter.formatIpAddress(wifiInfo.getIpAddress())));
+        speedView.setText(String.format(resources.getString(R.string.ns_speed), wifiInfo.getLinkSpeed()));
+        wirelessNetworks.setText(String.format(resources.getString(R.string.ns_number_of_available_network),size));
     }
 
     //update network status for each signal
@@ -174,6 +182,8 @@ public class NetworkStatus extends Fragment
             return;
         }
 
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+
         //add each []wifiDetails to list
         for (int i = 0; i < wifiScanList.size(); i++)
         {
@@ -184,8 +194,17 @@ public class NetworkStatus extends Fragment
                 wifiDetails[NetworkStatusAdapter.BSSID_TAB] = wifiScanList.get(i).BSSID;
                 wifiDetails[NetworkStatusAdapter.SSID_TAB] = wifiScanList.get(i).SSID;
                 wifiDetails[NetworkStatusAdapter.CAPABILITIES_TAB] = wifiScanList.get(i).capabilities;
-                wifiDetails[NetworkStatusAdapter.FREQUENCY_TAB] = wifiScanList.get(i).frequency + "";
-                wifiDetails[NetworkStatusAdapter.LEVEL_TAB] = wifiScanList.get(i).level + "";
+                wifiDetails[NetworkStatusAdapter.FREQUENCY_TAB] = String.valueOf(wifiScanList.get(i).frequency);
+                wifiDetails[NetworkStatusAdapter.LEVEL_TAB] = String.valueOf(wifiScanList.get(i).level);
+
+                if(wifiInfo.getBSSID().equals(wifiScanList.get(i).BSSID))
+                {
+                    wifiDetails[NetworkStatusAdapter.IS_CONNECTED] = "1";
+                }
+                else
+                {
+                    wifiDetails[NetworkStatusAdapter.IS_CONNECTED] = "0";
+                }
             }
 
             list.add(wifiDetails);
@@ -194,11 +213,11 @@ public class NetworkStatus extends Fragment
         mNetworkStatusAdapter = new NetworkStatusAdapter(getActivity().getApplicationContext(), list);
         mListView.setAdapter(mNetworkStatusAdapter);
 
-        updaateInfoBar();
+        updateInfoBar(list.size());
     }
 
     //create dialog to choice refresh interval
-    private void createDialog()
+    private void createRefreshIntervalDialog()
     {
         final String[] stringsRefreshRateValues = getResources().getStringArray(R.array.pref_refresh_rate_values);
         final String[] stringsRefreshRateOptions = getResources().getStringArray(R.array.pref_refresh_rate_options);
@@ -237,7 +256,7 @@ public class NetworkStatus extends Fragment
         }
     }
 
-//update if AS FAST AS POSSIBLE
+    //update if AS FAST AS POSSIBLE
     private class WifiScanReceiver extends BroadcastReceiver
     {
         public void onReceive(Context c, Intent intent)

@@ -3,47 +3,204 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/background_material_dark"
-              android:orientation="vertical">
+              android:orientation="vertical"
+    >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style ="@style/NT_FontNetworkStatus"
-        android:text=""
-        android:id="@+id/bssid_textView"/>
+        android:orientation="horizontal"
+        android:weightSum="1"
+        >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style ="@style/NT_FontNetworkStatus"
-        android:text=""
-        android:id="@+id/ssid_textView"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:paddingLeft="10dp"
+            android:paddingRight="2dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="4dp"
+            android:layout_gravity="center_vertical"
+            >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style ="@style/NT_FontNetworkStatus"
-        android:text=""
-        android:id="@+id/capabilities_textView"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style ="@style/NT_FontBSSIDSSID"
+                android:text=""
+                android:id="@+id/ssid__bssid_textView"
+                android:layout_gravity="center_vertical"
+                />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style ="@style/NT_FontNetworkStatus"
-        android:text=""
-        android:id="@+id/frequency_textView"/>
+        </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style ="@style/NT_FontNetworkStatus"
-        android:text=""
-        android:id="@+id/level_textView"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:paddingTop="7dp"
+            android:paddingRight="2dp"
+            >
 
-    <TextView
-        android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style ="@style/NT_FontNetworkStatus"
+                android:text="@string/ns_frequency_static_textView"
+                android:id="@+id/frequency_static_textView"
+                android:layout_gravity="center_vertical"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style ="@style/NT_FontNetworkStatus"
+                android:text=""
+                android:id="@+id/frequency_textView"
+                android:padding="2dp"
+                android:layout_gravity="center_vertical"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style ="@style/NT_FontNetworkStatus"
-        android:text=""
-        android:id="@+id/timestamp_textView"/>
+        android:orientation="horizontal"
+        android:weightSum="1"
+        >
+
+        <ImageView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_weight="0.2"
+        android:id="@+id/ns_wifi_strength_imageview"
+        android:padding="2dp"
+        />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:orientation="vertical"
+            >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="0.8"
+                    >
+
+                    <TextView
+                        android:layout_weight="0.6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        style ="@style/NT_FontNetworkStatus"
+                        android:text="@string/ns_capabilities_textView"
+                        android:id="@+id/capabilities_textView"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style ="@style/NT_FontNetworkStatus"
+                            android:text="@string/ns_channel_static_textView"
+                            android:id="@+id/channel_static_textView"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style ="@style/NT_FontNetworkStatus"
+                            android:text=""
+                            android:id="@+id/channel_textView"
+                            android:padding="2dp"
+                            />
+
+                    </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="0.8"
+                >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    >
+
+                    <ProgressBar
+                        android:id="@+id/ns_quality_progressbar"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:visibility="visible"
+                        android:paddingLeft="7dp"
+                        android:paddingRight="10dp"
+                        android:progressDrawable="@drawable/ns_progress_bar"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style ="@style/NT_FontNetworkStatus"
+                        android:text=""
+                        android:id="@+id/strength_percent_progressbar_textView"
+                        android:background="#00000000"
+                        android:layout_centerInParent="true"
+                        android:textStyle="bold"
+                        />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style ="@style/NT_FontNetworkStatus"
+                        android:text="@string/ns_strength_percent_static_textView"
+                        android:id="@+id/strength_percent_static_textView"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style ="@style/NT_FontNetworkStatus"
+                        android:text=""
+                        android:id="@+id/strength_percent_textView"
+                        android:padding="2dp"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

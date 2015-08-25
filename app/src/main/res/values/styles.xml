@@ -1,6 +1,5 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle</item>
         <item name="actionBarTabStyle">@style/ActionBarTabStyle</item>
@@ -37,19 +36,20 @@
         <item name="android:textSize">10dp</item>
     </style>
 
+    <style name="NT_FontBSSIDSSID" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/material_deep_teal_500</item>
+        <item name="android:textSize">11dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
     <style name="HT_FontRoomName" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/dark_white</item>
         <item name="android:textSize">17dp</item>
     </style>
 
     <style name="HT_FontStaticStrengthSpeed" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/dark_white</item>
-        <item name="android:textSize">10dp</item>
-    </style>
-
-    <style name="HT_FontStaticStrengthSpeedUnits" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/dark_white</item>
-        <item name="android:textSize">9dp</item>
+        <item name="android:textColor">@color/dark_yellow</item>
+        <item name="android:textSize">15dp</item>
     </style>
 
     <style name="HT_FontSpeedStrengthNow" parent="@android:style/TextAppearance">
@@ -58,12 +58,13 @@
     </style>
 
     <style name="HT_FontSpeedStrengthLast" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/dark_white</item>
-        <item name="android:textSize">9dp</item>
+        <item name="android:textColor">@color/material_deep_teal_500</item>
+        <item name="android:textSize">10dp</item>
     </style>
 
     <style name="HT_FontBar" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">10dp</item>
     </style>
+
 </resources>

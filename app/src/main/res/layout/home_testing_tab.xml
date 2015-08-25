@@ -15,10 +15,12 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="14dp"
+            android:layout_height="wrap_content"
             android:id="@+id/ht_connected_textview"
             style="@style/HT_FontBar"
-            android:text="@string/ht_connected_bar"
+            android:text="@string/connected_bar"
+            android:singleLine="true"
+            android:padding="2dp"
             />
 
     </LinearLayout>
@@ -72,6 +74,41 @@
             />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="19dp"
+        android:orientation="horizontal"
+        android:background="@color/primary_dark_material_dark"
+        android:weightSum="1"
+        >
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            style ="@style/HT_FontStaticStrengthSpeed"
+            android:text= "@string/ht_strength_static_textView"
+            android:id="@+id/ht_strength_static_textView"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            />
+
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            style ="@style/HT_FontStaticStrengthSpeed"
+            android:text= "@string/ht_speed_static_textView"
+            android:id="@+id/ht_last_static_textView"
+            android:gravity="center"
+            android:layout_weight="0.5"
+            />
+
+
+
+    </LinearLayout>
+
+    <View style="@style/Divider"/>
 
     <ListView
         style="@style/NetworksListStyle"
