@@ -2,7 +2,10 @@ package com.example.dominik.wifi_analyzer;
 
 import java.util.Locale;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -33,7 +36,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +135,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             switch (position) {
                 case 0:
                     // Top Rated fragment activity
-                    return new Tab3Fragment();
+                    return new ChannelInterference();
                 case 1:
                     // Games fragment activity
                     return new NetworkStatus();
@@ -210,3 +212,4 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     }
 
 }
+

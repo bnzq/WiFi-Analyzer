@@ -29,13 +29,13 @@ public class NetworkStatus extends Fragment
 {
     public static final String LOG_TAG = NetworkStatus.class.getSimpleName();
 
-    WifiScanReceiver wifiReceiver;
-    WifiManager wifiManager;
+    private WifiScanReceiver mWifiReceiver;
+    private WifiManager mWifiManager;
     private NetworkStatusAdapter mNetworkStatusAdapter;
     private ListView mListView;
 
-    private int refreshRateInSec = 2;
-    private int refreshRate = 1000 * refreshRateInSec;
+    private int mRefreshRateInSec = 2;
+    private int mRrefreshRate = 1000 * mRefreshRateInSec;
     private Timer timer;
     private TimerTask updateTask;
 
@@ -46,17 +46,17 @@ public class NetworkStatus extends Fragment
     TextView intervalView;
     TextView ipView;
     TextView speedView;
-    TextView wirelessNetworks;
+    TextView wirelessNetworksView;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        wifiManager=(WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
-        wifiReceiver = new WifiScanReceiver();
+        mWifiManager =(WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
+        mWifiReceiver = new WifiScanReceiver();
 
-        enableWifi();
+        Utility.enableWifi(mWifiManager);
 
-        wifiManager.startScan();
+        mWifiManager.startScan();
 
         super.onCreate(savedInstanceState);
     }
@@ -89,7 +89,7 @@ public class NetworkStatus extends Fragment
         intervalView = (TextView) rootView.findViewById(R.id.ns_interval_textview);
         ipView = (TextView) rootView.findViewById(R.id.ns_ip_textView);
         speedView = (TextView) rootView.findViewById(R.id.ns_speed_textView);
-        wirelessNetworks = (TextView) rootView.findViewById(R.id.ns_number_of_available_network_textView);
+        wirelessNetworksView = (TextView) rootView.findViewById(R.id.ns_number_of_available_network_textView);
 
         refreshButton.setOnClickListener(new View.OnClickListener()
         {
@@ -117,7 +117,7 @@ public class NetworkStatus extends Fragment
     //unregister receiver & close timer
     private void setParametersReceiverBefore()
     {
-        getActivity().unregisterReceiver(wifiReceiver);
+        getActivity().unregisterReceiver(mWifiReceiver);
 
         if (timer != null)
         {
@@ -130,10 +130,10 @@ public class NetworkStatus extends Fragment
     //register receiver & schedule timer
     private void setParametersReceiverAfter()
     {
-        getActivity().registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        getActivity().registerReceiver(mWifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
         //schedule timer
-        if(refreshRate > 0)
+        if(mRrefreshRate > 0)
         {
             timer = new Timer();
             updateTask = new TimerTask() {
@@ -149,7 +149,7 @@ public class NetworkStatus extends Fragment
                     });
                 }
             };
-            timer.scheduleAtFixedRate(updateTask, 0, refreshRate);
+            timer.scheduleAtFixedRate(updateTask, 0, mRrefreshRate);
         }
     }
 
@@ -157,23 +157,23 @@ public class NetworkStatus extends Fragment
     private void updateInfoBar(int size)
     {
         Resources resources = getResources();
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
 
         connectedInfoView.setText(String.format(resources.getString(R.string.connected_bar), wifiInfo.getSSID()));
-        intervalView.setText(String.format(resources.getString(R.string.ns_interval_bar), refreshRateInSec));
+        intervalView.setText(String.format(resources.getString(R.string.ns_interval_bar), mRefreshRateInSec));
         ipView.setText(String.format(resources.getString(R.string.ns_ip), Formatter.formatIpAddress(wifiInfo.getIpAddress())));
         speedView.setText(String.format(resources.getString(R.string.ns_speed), wifiInfo.getLinkSpeed()));
-        wirelessNetworks.setText(String.format(resources.getString(R.string.ns_number_of_available_network),size));
+        wirelessNetworksView.setText(String.format(resources.getString(R.string.ns_number_of_available_network), size));
     }
 
     //update network status for each signal
     private void updateNetworkStatus()
     {
-        enableWifi();
+        Utility.enableWifi(mWifiManager);
 
-        wifiManager.startScan();
+        mWifiManager.startScan();
 
-        List<ScanResult> wifiScanList = wifiManager.getScanResults();
+        List<ScanResult> wifiScanList = mWifiManager.getScanResults();
         List<String[]> list = new ArrayList<String[]>();
 
 
@@ -182,7 +182,7 @@ public class NetworkStatus extends Fragment
             return;
         }
 
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
 
         //add each []wifiDetails to list
         for (int i = 0; i < wifiScanList.size(); i++)
@@ -210,7 +210,7 @@ public class NetworkStatus extends Fragment
             list.add(wifiDetails);
         }
 
-        mNetworkStatusAdapter = new NetworkStatusAdapter(getActivity().getApplicationContext(), list);
+        mNetworkStatusAdapter = new NetworkStatusAdapter( getActivity(), list);
         mListView.setAdapter(mNetworkStatusAdapter);
 
         updateInfoBar(list.size());
@@ -232,8 +232,8 @@ public class NetworkStatus extends Fragment
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        refreshRateInSec = Integer.parseInt(stringsRefreshRateValues[which]);
-                        refreshRate = 1000 * refreshRateInSec;
+                        mRefreshRateInSec = Integer.parseInt(stringsRefreshRateValues[which]);
+                        mRrefreshRate = 1000 * mRefreshRateInSec;
 
                         setParametersReceiverBefore();
                         setParametersReceiverAfter();
@@ -247,21 +247,12 @@ public class NetworkStatus extends Fragment
 
     }
 
-    //enable wifi if is disabled
-    private void enableWifi()
-    {
-        if (wifiManager.isWifiEnabled() == false)
-        {
-            wifiManager.setWifiEnabled(true);
-        }
-    }
-
     //update if AS FAST AS POSSIBLE
     private class WifiScanReceiver extends BroadcastReceiver
     {
         public void onReceive(Context c, Intent intent)
         {
-            if( refreshRate == 0)
+            if( mRrefreshRate == 0)
             {
                 updateNetworkStatus();
             }

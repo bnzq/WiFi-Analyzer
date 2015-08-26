@@ -1,5 +1,10 @@
 package com.example.dominik.wifi_analyzer;
 
+import android.graphics.Color;
+import android.net.wifi.WifiManager;
+
+import java.util.Random;
+
 public class Utility
 {
 
@@ -87,5 +92,21 @@ public class Utility
             return OPEN;
         else
             return result;
+    }
+
+    public static int randColor()
+    {
+        Random rand = new Random();
+        float[] hsv = new float[3];
+        Color.RGBToHSV(rand.nextInt(255), rand.nextInt(255),rand.nextInt(255), hsv);
+        return Color.HSVToColor(hsv);
+    }
+
+    public static void enableWifi(WifiManager wifiManager)
+    {
+        if (wifiManager.isWifiEnabled() == false)
+        {
+            wifiManager.setWifiEnabled(true);
+        }
     }
 }

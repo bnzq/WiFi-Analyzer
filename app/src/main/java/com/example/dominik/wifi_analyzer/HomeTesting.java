@@ -28,12 +28,12 @@ public class HomeTesting extends Fragment
 {
     public static final String LOG_TAG = HomeTesting.class.getSimpleName();
 
-    WifiManager wifiManager;
-    MyDBHandler myDBHandler;
+    private WifiManager mWifiManager;
+    private MyDBHandler mMyDBHandler;
     private HomeTestingAdapter mHomeTestingAdapter;
     private ListView mListView;
-    private int positionSelected = -1;
-    private String nameSelected = "";
+    private int mPositionSelected = -1;
+    private String mNameSelected = "";
     private static final int TEXT_ID = 0;
 
     Button addButton;
@@ -50,8 +50,8 @@ public class HomeTesting extends Fragment
     {
         super.onCreate(savedInstanceState);
 
-        wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
-        enableWifi();
+        mWifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+        Utility.enableWifi(mWifiManager);
     }
 
     @Override
@@ -76,9 +76,9 @@ public class HomeTesting extends Fragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 view.setSelected(true);
-                positionSelected = position;
+                mPositionSelected = position;
                 TextView textView = (TextView) view.findViewById(R.id.room_name_textView);
-                nameSelected = (String) textView.getText();
+                mNameSelected = (String) textView.getText();
             }
         });
 
@@ -87,8 +87,8 @@ public class HomeTesting extends Fragment
             @Override
             public void onClick(View v)
             {
-                if (positionSelected != -1) {
-                    testRoom(nameSelected);
+                if (mPositionSelected != -1) {
+                    testRoom(mNameSelected);
                     updateTestingRooms();
                 }
             }
@@ -109,7 +109,7 @@ public class HomeTesting extends Fragment
             @Override
             public void onClick(View v)
             {
-                myDBHandler.deleteAllAndRestoreDefaultRooms();
+                mMyDBHandler.deleteAllAndRestoreDefaultRooms();
                 updateTestingRooms();
             }
         });
@@ -119,9 +119,9 @@ public class HomeTesting extends Fragment
             @Override
             public void onClick(View v)
             {
-                if(positionSelected != -1)
+                if(mPositionSelected != -1)
                 {
-                    myDBHandler.deleteRoomInfo(nameSelected);
+                    mMyDBHandler.deleteRoomInfo(mNameSelected);
                     updateTestingRooms();
                     restoreSelected();
                 }
@@ -133,7 +133,7 @@ public class HomeTesting extends Fragment
             @Override
             public void onClick(View v)
             {
-                if(positionSelected != -1)
+                if(mPositionSelected != -1)
                 {
                     Dialog dialog = createEditRoomDialog();
                     dialog.show();
@@ -141,9 +141,9 @@ public class HomeTesting extends Fragment
             }
         });
 
-        myDBHandler = new MyDBHandler(getActivity());
+        mMyDBHandler = new MyDBHandler(getActivity());
 
-        myDBHandler.deleteAllAndRestoreDefaultRooms();
+        mMyDBHandler.deleteAllAndRestoreDefaultRooms();
         updateTestingRooms();
 
         return rootView;
@@ -152,30 +152,30 @@ public class HomeTesting extends Fragment
     //test wifi parameters and edit in datebase
     private void testRoom(String nameRoom)
     {
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
         RoomInfo roomInfo = new RoomInfo(
                 wifiInfo.getRssi(),
                 wifiInfo.getLinkSpeed(),
                 nameRoom
         );
 
-        myDBHandler.editRoomInfo(nameRoom, roomInfo);
+        mMyDBHandler.editRoomInfo(nameRoom, roomInfo);
     }
 
     //update info about connected info in simple bar
     private void updateConnectedViewSimpleBar()
     {
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        connectedView.setText(String.format(getActivity().getResources().getString(R.string.connected_bar),wifiInfo.getSSID()));
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+        connectedView.setText(String.format(getActivity().getResources().getString(R.string.connected_bar), wifiInfo.getSSID()));
     }
 
     //update rooms from datebase to view
     private void updateTestingRooms()
     {
-        enableWifi();
+        Utility.enableWifi(mWifiManager);
         List<String[]> list = new ArrayList<String[]>();
 
-        List<RoomInfo> roomInfoList = myDBHandler.getAllRoomsInfos();
+        List<RoomInfo> roomInfoList = mMyDBHandler.getAllRoomsInfos();
 
         //add each []wifiDetails to list
         for (int i = 0; i < roomInfoList.size(); i++)
@@ -200,15 +200,6 @@ public class HomeTesting extends Fragment
         updateConnectedViewSimpleBar();
     }
 
-    //enable wifi if is disabled
-    private void enableWifi()
-    {
-        if (wifiManager.isWifiEnabled() == false)
-        {
-            wifiManager.setWifiEnabled(true);
-        }
-    }
-
     //create dialog to add new room and add created room to datebase
     private Dialog createAddRoomDialog()
     {
@@ -230,7 +221,7 @@ public class HomeTesting extends Fragment
                 public void onClick(DialogInterface dialog, int whichButton)
                 {
                     String value = input.getText().toString();
-                    myDBHandler.addRoomInfo(new RoomInfo(0, 0, value));
+                    mMyDBHandler.addRoomInfo(new RoomInfo(0, 0, value));
                     updateTestingRooms();
 
                     return;
@@ -270,7 +261,7 @@ public class HomeTesting extends Fragment
                 public void onClick(DialogInterface dialog, int whichButton)
                 {
                     String value = input.getText().toString();
-                    myDBHandler.editOnlyRoomNameInRoomInfo(nameSelected, value);
+                    mMyDBHandler.editOnlyRoomNameInRoomInfo(mNameSelected, value);
                     updateTestingRooms();
                     restoreSelected();
 
@@ -293,22 +284,22 @@ public class HomeTesting extends Fragment
     //restore to default selected view
     private void restoreSelected()
     {
-        nameSelected = "";
-        positionSelected = -1;
+        mNameSelected = "";
+        mPositionSelected = -1;
     }
 
     private class MyDBHandler extends SQLiteOpenHelper
     {
         private static final int DATABASE_VERSION = 1;
         private static final String DATABASE_NAME = "hometestingDB.db";
-        public static final String TABLE_ROOMS = "rooms";
+        private static final String TABLE_ROOMS = "rooms";
 
-        public static final String COLUMN_ID = "_id";
-        public static final String COLUMN_ROOM_NAME = "roomname";
-        public static final String COLUMN_LINK_SPEED = "linkspeed";
-        public static final String COLUMN_RSSI = "rssi";
-        public static final String COLUMN_LAST_LINK_SPEED = "lastlinkspeed";
-        public static final String COLUMN_LAST_RSSI = "lastrssi";
+        private static final String COLUMN_ID = "_id";
+        private static final String COLUMN_ROOM_NAME = "roomname";
+        private static final String COLUMN_LINK_SPEED = "linkspeed";
+        private static final String COLUMN_RSSI = "rssi";
+        private static final String COLUMN_LAST_LINK_SPEED = "lastlinkspeed";
+        private static final String COLUMN_LAST_RSSI = "lastrssi";
 
         public MyDBHandler(Context context)
         {
@@ -366,7 +357,7 @@ public class HomeTesting extends Fragment
 
             for (int i = 0; i < sizeDefaultRooms; i++ )
             {
-                myDBHandler.addRoomInfo(new RoomInfo(0,0,roomTab1[i]));
+                mMyDBHandler.addRoomInfo(new RoomInfo(0, 0, roomTab1[i]));
             }
 
             final String query[] = new String[]{
@@ -405,7 +396,7 @@ public class HomeTesting extends Fragment
 
             for (int i = 0; i < sizeDefaultRooms; i++ )
             {
-                myDBHandler.addRoomInfo(new RoomInfo(0,0,roomTab[i]));
+                mMyDBHandler.addRoomInfo(new RoomInfo(0, 0, roomTab[i]));
             }
 
         }

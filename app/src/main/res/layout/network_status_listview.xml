@@ -31,6 +31,7 @@
                 android:text=""
                 android:id="@+id/ssid__bssid_textView"
                 android:layout_gravity="center_vertical"
+                android:singleLine="true"
                 />
 
         </LinearLayout>
@@ -51,6 +52,7 @@
                 android:text="@string/ns_frequency_static_textView"
                 android:id="@+id/frequency_static_textView"
                 android:layout_gravity="center_vertical"
+                android:singleLine="true"
                 />
 
             <TextView
@@ -60,6 +62,7 @@
                 android:text=""
                 android:id="@+id/frequency_textView"
                 android:padding="2dp"
+                android:singleLine="true"
                 android:layout_gravity="center_vertical"
                 />
 
@@ -104,6 +107,7 @@
                         style ="@style/NT_FontNetworkStatus"
                         android:text="@string/ns_capabilities_textView"
                         android:id="@+id/capabilities_textView"
+                        android:singleLine="true"
                         />
 
                     <LinearLayout
@@ -118,6 +122,7 @@
                             android:layout_height="wrap_content"
                             style ="@style/NT_FontNetworkStatus"
                             android:text="@string/ns_channel_static_textView"
+                            android:singleLine="true"
                             android:id="@+id/channel_static_textView"
                             />
 
@@ -126,6 +131,7 @@
                             android:layout_height="wrap_content"
                             style ="@style/NT_FontNetworkStatus"
                             android:text=""
+                            android:singleLine="true"
                             android:id="@+id/channel_textView"
                             android:padding="2dp"
                             />
@@ -164,6 +170,7 @@
                         android:layout_height="wrap_content"
                         style ="@style/NT_FontNetworkStatus"
                         android:text=""
+                        android:singleLine="true"
                         android:id="@+id/strength_percent_progressbar_textView"
                         android:background="#00000000"
                         android:layout_centerInParent="true"
@@ -184,6 +191,7 @@
                         style ="@style/NT_FontNetworkStatus"
                         android:text="@string/ns_strength_percent_static_textView"
                         android:id="@+id/strength_percent_static_textView"
+                        android:singleLine="true"
                         />
 
                     <TextView
@@ -191,6 +199,7 @@
                         android:layout_height="wrap_content"
                         style ="@style/NT_FontNetworkStatus"
                         android:text=""
+                        android:singleLine="true"
                         android:id="@+id/strength_percent_textView"
                         android:padding="2dp"
                         />

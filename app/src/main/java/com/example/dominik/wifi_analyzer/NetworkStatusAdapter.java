@@ -73,7 +73,7 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
             viewHolder.strengthProgressBarView.setText(
                     String.format(
                             context.getResources().getString(R.string.ns_percent_textView)
-                            ,quality));
+                            , quality));
 
             if(tab[IS_CONNECTED].equals("1"))
             {
