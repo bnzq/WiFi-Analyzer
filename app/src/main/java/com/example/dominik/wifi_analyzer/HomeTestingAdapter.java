@@ -40,14 +40,13 @@ public class HomeTestingAdapter extends ArrayAdapter<String[]>
         View view = inflater.inflate(R.layout.home_testing_listview, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
-        view.setTag(viewHolder);
 
-        setValuesToListView(position, viewHolder, view);
+        setValuesToListView(position, viewHolder);
 
         return view;
     }
 
-    private void setValuesToListView(int position, ViewHolder viewHolder, View view)
+    private void setValuesToListView(int position, ViewHolder viewHolder)
     {
         for (int i = 0; i < this.values.size(); i++)
         {
@@ -86,8 +85,6 @@ public class HomeTestingAdapter extends ArrayAdapter<String[]>
         public final TextView progressBarSpeedNowView;
         public final TextView progressBarSpeedLastView;
 
-
-
         public ViewHolder(View view)
         {
             roomNameView = (TextView) view.findViewById(R.id.room_name_textView);
@@ -106,7 +103,6 @@ public class HomeTestingAdapter extends ArrayAdapter<String[]>
             progressBarQualityLast.setMax(100);
             progressBarSpeedNow.setMax(54);
             progressBarSpeedLast.setMax(54);
-
         }
     }
 }

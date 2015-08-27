@@ -24,7 +24,6 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
     private final Context context;
     private final List<String[]> values;
 
-
     public NetworkStatusAdapter(Context context, List<String[]> objects)
     {
         super(context, R.layout.network_status_listview, objects);
@@ -41,7 +40,6 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
         View view = inflater.inflate(R.layout.network_status_listview, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
-        view.setTag(viewHolder);
 
         setValuesToListView(position, viewHolder);
 
@@ -55,25 +53,21 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
         {
             String[] tab = getItem(position);
 
-            viewHolder.ssidView.setText(String.format(context.getString(R.string.ns_ssid_bssid_textview), tab[SSID_TAB], tab[BSSID_TAB]));
-            viewHolder.channelView.setText(Integer.toString(Utility.convertFrequencyToChannel(Integer.valueOf(tab[FREQUENCY_TAB]))));
+            viewHolder.ssidView.setText(String.format(
+                    context.getString(R.string.ns_ssid_bssid_textview), tab[SSID_TAB], tab[BSSID_TAB]));
+            viewHolder.channelView.setText(Integer.toString(
+                        Utility.convertFrequencyToChannel(Integer.valueOf(tab[FREQUENCY_TAB]))));
             viewHolder.levelView.setText(tab[LEVEL_TAB]);
             viewHolder.frequencyView.setText(tab[FREQUENCY_TAB]);
-
-            viewHolder.capabilitiesView.setText(
-                    String.format(
-                            context.getResources().getString(R.string.ns_capabilities_textView),
-                            Utility.getEncryptionFromCapabilities(tab[CAPABILITIES_TAB])));
-
+            viewHolder.capabilitiesView.setText(String.format(
+                    context.getResources().getString(R.string.ns_capabilities_textView), Utility.getEncryptionFromCapabilities(tab[CAPABILITIES_TAB])));
 
             int quality = Utility.convertRssiToQuality(Integer.valueOf(tab[LEVEL_TAB]));
 
             viewHolder.progressBar.setMax(100);
             viewHolder.progressBar.setProgress(quality);
-            viewHolder.strengthProgressBarView.setText(
-                    String.format(
-                            context.getResources().getString(R.string.ns_percent_textView)
-                            , quality));
+            viewHolder.strengthProgressBarView.setText(String.format(
+                    context.getResources().getString(R.string.ns_percent_textView), quality));
 
             if(tab[IS_CONNECTED].equals("1"))
             {
@@ -102,12 +96,10 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
             }
 
         }
-
     }
 
     public static class ViewHolder
     {
-
         public final TextView ssidView;
         public final TextView capabilitiesView;
         public final TextView frequencyView;
@@ -124,9 +116,10 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
             frequencyView = (TextView) view.findViewById(R.id.frequency_textView);
             levelView = (TextView) view.findViewById(R.id.strength_percent_textView);
             channelView = (TextView) view.findViewById(R.id.channel_textView);
-
             strengthProgressBarView = (TextView) view.findViewById(R.id.strength_percent_progressbar_textView);
+
             imageView = (ImageView) view.findViewById(R.id.ns_wifi_strength_imageview);
+
             progressBar =  (ProgressBar) view.findViewById(R.id.ns_quality_progressbar);
         }
     }

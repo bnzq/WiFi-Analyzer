@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.achartengine.ChartFactory;
@@ -32,6 +33,12 @@ public class ChannelInterference extends Fragment
 {
     public static final String LOG_TAG = ChannelInterference.class.getSimpleName();
 
+    final static short FREQUENCY_CONNECTED_CHANNEL = 0;
+    final static short NETWORKS_ON_CONNECTED_CHANNEL = 1;
+    final static short SSID_CONNECTED_NETWORK = 2;
+
+    final private short numberOfChannels = 13;
+
     private WifiScanReceiver mWifiReceiver;
     private WifiManager mWifiManager;
     private LinearLayout mChartChannels;
@@ -42,6 +49,8 @@ public class ChannelInterference extends Fragment
     TextView channelView;
     TextView networksOnThisChannelView;
     TextView recommendedView;
+
+    ProgressBar valuationProgressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +65,9 @@ public class ChannelInterference extends Fragment
         networksOnThisChannelView = (TextView) rootView.findViewById(R.id.ci_numbers_of_networks_on_this_ch_textview);
         recommendedView = (TextView) rootView.findViewById(R.id.ci_recommended_textview);
 
-        mChartChannels.addView(updateChart(), 0);
+        valuationProgressBar = (ProgressBar) rootView.findViewById(R.id.ci_valuation_progressbar);
+
+        update();
 
         return rootView;
     }
@@ -88,88 +99,90 @@ public class ChannelInterference extends Fragment
         super.onResume();
     }
 
-    private View updateChart()
+    private void update()
     {
-        WifiChart wifiChart = new WifiChart(mWifiManager);
-        wifiChart.init();
-        wifiChart.setValues();
+        Utility.enableWifi(mWifiManager);
+        mWifiManager.startScan();
 
-        updateInfoBar(wifiChart.getmOnConnectedChannel(), wifiChart.getmFrequency());
+        List<ScanResult> wifiScanList = mWifiManager.getScanResults();
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+        HashMap<Short, String> connectionInfo =  getInfoAboutCurrentConnection(wifiInfo, wifiScanList);
 
-        return wifiChart.getmChartView();
+        updateInfoBar(Integer.valueOf(connectionInfo.get(NETWORKS_ON_CONNECTED_CHANNEL)),
+                Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL)),
+                connectionInfo.get(SSID_CONNECTED_NETWORK));
+
+        updateChart(wifiScanList, connectionInfo);
+
     }
 
-    private void updateInfoBar(int size, int freq)
+    private void updateChart(List<ScanResult> wifiScanList, HashMap<Short, String> connectionInfo)
+    {
+        WifiChart wifiChart = new WifiChart(wifiScanList, numberOfChannels);
+        wifiChart.init();
+        wifiChart.setValues(connectionInfo.get(SSID_CONNECTED_NETWORK));
+
+        mChartChannels.addView(wifiChart.getmChartView(), 0);
+    }
+
+    private void updateInfoBar(int size, int freq , String ssid)
     {
         Resources resources = getResources();
-        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
 
-        connectedView.setText(String.format(resources.getString(R.string.connected_bar), wifiInfo.getSSID()));
+        connectedView.setText(String.format(resources.getString(R.string.connected_bar), ssid));
         valuationProgressBarView.setText("2/10");
         channelView.setText(String.format(resources.getString(R.string.ci_channel_bar), Utility.convertFrequencyToChannel(freq)));
         networksOnThisChannelView.setText(String.format(resources.getString(R.string.ci_number_of_networks_on_this_channel_bar), size));
         recommendedView.setText(String.format(resources.getString(R.string.ci_recommended_bar), 3, 3, 3));
     }
 
-    private int getColorForConnection(HashMap<String, Integer> hashMap, String ssid)
+    private HashMap<Short, String> getInfoAboutCurrentConnection(WifiInfo wifiInfo, List<ScanResult> wifiScanList)
     {
-            if (!hashMap.containsKey(ssid))
+        HashMap<Short, String> hashMap = new HashMap<>();
+
+        int onConnectedChannel = 0;
+        int frequency = 0;
+
+        for(int i = 0; i < wifiScanList.size(); i++)
+        {
+            if(wifiInfo.getBSSID().equals(wifiScanList.get(i).BSSID))
             {
-                hashMap.put(ssid, Utility.randColor());
+                frequency = wifiScanList.get(i).frequency;
             }
 
-        return hashMap.get(ssid);
-    }
-
-    private class WifiScanReceiver extends BroadcastReceiver
-    {
-        public void onReceive(Context c, Intent intent)
-        {
-            mChartChannels.addView(updateChart(), 0);
+            if (frequency == wifiScanList.get(i).frequency)
+            {
+                ++onConnectedChannel;
+            }
         }
+
+        hashMap.put(FREQUENCY_CONNECTED_CHANNEL, String.valueOf(frequency));
+        hashMap.put(NETWORKS_ON_CONNECTED_CHANNEL, String.valueOf(onConnectedChannel));
+        hashMap.put(SSID_CONNECTED_NETWORK, wifiInfo.getSSID());
+
+        return hashMap;
     }
 
     private class WifiChart
     {
+        private final short numberOfChannels;
         private XYMultipleSeriesDataset mDataset;
         private XYMultipleSeriesRenderer mRenderer;
 
         private GraphicalView mChartView;
-        private List<ScanResult> mWifiScanList;
 
         private final String LABEL_X = "Channel";
         private final String LABEL_Y = "Strength (dBm)";
+        private final List<ScanResult> mWifiScanList;
 
-        private int mOnConnectedChannel = 0;
-        private int mFrequency = 0;
-
-        public WifiChart(WifiManager wifiManager)
+        public WifiChart(List<ScanResult> wifiScanList, short numberOfChannels)
         {
             mDataset = new XYMultipleSeriesDataset();
             mRenderer = new XYMultipleSeriesRenderer();
+            this.mWifiScanList = wifiScanList;
+            this.numberOfChannels = numberOfChannels;
 
-            Utility.enableWifi(wifiManager);
-
-            wifiManager.startScan();
-
-            mWifiScanList = wifiManager.getScanResults();
             mChartView =  ChartFactory.getLineChartView(getActivity(), mDataset, mRenderer);
-        }
-
-        public View getmChartView()
-        {
-            mChartView =  ChartFactory.getLineChartView(getActivity(), mDataset, mRenderer);
-            return mChartView;
-        }
-
-        public int getmOnConnectedChannel()
-        {
-            return mOnConnectedChannel;
-        }
-
-        public int getmFrequency()
-        {
-            return mFrequency;
         }
 
         public void init()
@@ -181,7 +194,7 @@ public class ChannelInterference extends Fragment
             mRenderer.setYLabels(6);
             mRenderer.setYTitle(LABEL_Y);
             mRenderer.setXAxisMin(-2);
-            mRenderer.setXAxisMax(15);
+            mRenderer.setXAxisMax(numberOfChannels + 2);
             mRenderer.setXLabels(0);
             mRenderer.setXTitle(LABEL_X);
             mRenderer.setShowGrid(true);
@@ -189,54 +202,73 @@ public class ChannelInterference extends Fragment
             mRenderer.setFitLegend(true);
             mRenderer.setShowCustomTextGrid(true);
 
-            for (int i = -2; i < 15; i++)
+            for (int i = -2; i < numberOfChannels + 2; i++)
             {
-                if(i > 0 && i < 14)
+                if(i > 0 && i < numberOfChannels + 1)
                     mRenderer.addXTextLabel(i, String.valueOf(i));
                 else
                     mRenderer.addXTextLabel(i, "");
             }
         }
 
-        public void setValues()
+        public void setValues( String currentSSID)
         {
-            WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
-
             for(int i = 0; i < mWifiScanList.size(); i++)
             {
-                if(wifiInfo.getBSSID().equals(mWifiScanList.get(i).BSSID))
-                {
-                    mFrequency = mWifiScanList.get(i).frequency;
-                }
-            }
-
-            for(int i = 0; i < mWifiScanList.size(); i++)
-            {
-                if (mFrequency == mWifiScanList.get(i).frequency)
-                {
-                    ++mOnConnectedChannel;
-                }
-
                 XYSeriesRenderer renderer = new XYSeriesRenderer();
-                renderer.setLineWidth(2);
                 renderer.setColor(getColorForConnection(mSsidColorMap, mWifiScanList.get(i).SSID));
                 renderer.setDisplayBoundingPoints(true);
-                renderer.setPointStyle(PointStyle.CIRCLE);
-                renderer.setPointStrokeWidth(3);
+
+                if(currentSSID.equals(mWifiScanList.get(i).SSID))
+                {
+                    renderer.setLineWidth(5);
+                    renderer.setPointStyle(PointStyle.DIAMOND);
+                    renderer.setDisplayChartValues(true);
+                    renderer.setChartValuesTextSize(15);
+                    renderer.setPointStrokeWidth(10);
+                }
+                else
+                {
+                    renderer.setLineWidth(2);
+                    renderer.setPointStyle(PointStyle.CIRCLE);
+                    renderer.setPointStrokeWidth(3);
+                }
 
                 XYSeries series = new XYSeries(mWifiScanList.get(i).SSID );
 
                 int channel = Utility.convertFrequencyToChannel(mWifiScanList.get(i).frequency);
-                series.add( channel - 2, -100);
-                series.add( channel, mWifiScanList.get(i).level);
-                series.add( channel + 2, -100);
+                series.add(channel - 2, -100);
+                series.add(channel, mWifiScanList.get(i).level);
+                series.add(channel + 2, -100);
 
                 mDataset.addSeries(i, series);
                 mRenderer.addSeriesRenderer(i, renderer);
-
             }
+        }
+
+        private int getColorForConnection(HashMap<String, Integer> hashMap, String ssid)
+        {
+            if (!hashMap.containsKey(ssid))
+            {
+                hashMap.put(ssid, Utility.randColor());
+            }
+
+            return hashMap.get(ssid);
+        }
+
+        public View getmChartView()
+        {
+            mChartView =  ChartFactory.getLineChartView(getActivity(), mDataset, mRenderer);
+            return mChartView;
         }
 
     }
 
+    private class WifiScanReceiver extends BroadcastReceiver
+    {
+        public void onReceive(Context c, Intent intent)
+        {
+            update();
+        }
+    }
 }

@@ -28,13 +28,13 @@ public class HomeTesting extends Fragment
 {
     public static final String LOG_TAG = HomeTesting.class.getSimpleName();
 
+    private static final int TEXT_ID = 0;
+
     private WifiManager mWifiManager;
     private MyDBHandler mMyDBHandler;
     private HomeTestingAdapter mHomeTestingAdapter;
-    private ListView mListView;
     private int mPositionSelected = -1;
     private String mNameSelected = "";
-    private static final int TEXT_ID = 0;
 
     Button addButton;
     Button delButton;
@@ -44,6 +44,7 @@ public class HomeTesting extends Fragment
 
     TextView connectedView;
 
+    ListView mListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -58,7 +59,6 @@ public class HomeTesting extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-
         View rootView = inflater.inflate(R.layout.home_testing_tab, container, false);
 
         addButton = (Button) rootView.findViewById(R.id.add_room_button);
@@ -66,6 +66,7 @@ public class HomeTesting extends Fragment
         editButton = (Button) rootView.findViewById(R.id.edit_room_button);
         defButton = (Button) rootView.findViewById(R.id.def_room_button);
         testButton = (Button) rootView.findViewById(R.id.home_testing_test_button);
+
         connectedView = (TextView) rootView.findViewById(R.id.ht_connected_textview);
 
         mListView = (ListView) rootView.findViewById(R.id.home_rooms_listview);
@@ -89,7 +90,7 @@ public class HomeTesting extends Fragment
             {
                 if (mPositionSelected != -1) {
                     testRoom(mNameSelected);
-                    updateTestingRooms();
+                    updateView();
                 }
             }
         });
@@ -101,30 +102,6 @@ public class HomeTesting extends Fragment
             {
                 Dialog dialog = createAddRoomDialog();
                 dialog.show();
-            }
-        });
-
-        defButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mMyDBHandler.deleteAllAndRestoreDefaultRooms();
-                updateTestingRooms();
-            }
-        });
-
-        delButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if(mPositionSelected != -1)
-                {
-                    mMyDBHandler.deleteRoomInfo(mNameSelected);
-                    updateTestingRooms();
-                    restoreSelected();
-                }
             }
         });
 
@@ -141,43 +118,56 @@ public class HomeTesting extends Fragment
             }
         });
 
+        delButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(mPositionSelected != -1)
+                {
+                    mMyDBHandler.deleteRoomInfo(mNameSelected);
+                    updateView();
+                    restoreSelected();
+                }
+            }
+        });
+
+        defButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mMyDBHandler.deleteAllAndRestoreDefaultRooms();
+                updateView();
+            }
+        });
+
+
         mMyDBHandler = new MyDBHandler(getActivity());
 
         mMyDBHandler.deleteAllAndRestoreDefaultRooms();
-        updateTestingRooms();
+
+        updateView();
 
         return rootView;
     }
 
-    //test wifi parameters and edit in datebase
-    private void testRoom(String nameRoom)
+    //update View - Info Bar + Rooms
+    private void updateView()
     {
-        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
-        RoomInfo roomInfo = new RoomInfo(
-                wifiInfo.getRssi(),
-                wifiInfo.getLinkSpeed(),
-                nameRoom
-        );
+        Utility.enableWifi(mWifiManager);
 
-        mMyDBHandler.editRoomInfo(nameRoom, roomInfo);
-    }
-
-    //update info about connected info in simple bar
-    private void updateConnectedViewSimpleBar()
-    {
-        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
-        connectedView.setText(String.format(getActivity().getResources().getString(R.string.connected_bar), wifiInfo.getSSID()));
+        updateTestingRooms();
+        updateInfoBar();
     }
 
     //update rooms from datebase to view
     private void updateTestingRooms()
     {
-        Utility.enableWifi(mWifiManager);
         List<String[]> list = new ArrayList<String[]>();
 
         List<RoomInfo> roomInfoList = mMyDBHandler.getAllRoomsInfos();
 
-        //add each []wifiDetails to list
         for (int i = 0; i < roomInfoList.size(); i++)
         {
             String[] wifiDetails = new String[HomeTestingAdapter.SIZE_TAB];
@@ -194,10 +184,28 @@ public class HomeTesting extends Fragment
             list.add(wifiDetails);
         }
 
-        mHomeTestingAdapter = new HomeTestingAdapter(getActivity().getApplicationContext(), list);
+        mHomeTestingAdapter = new HomeTestingAdapter(getActivity(), list);
         mListView.setAdapter(mHomeTestingAdapter);
+    }
 
-        updateConnectedViewSimpleBar();
+    //update info about connected info in simple bar
+    private void updateInfoBar()
+    {
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+        connectedView.setText(String.format(getActivity().getResources().getString(R.string.connected_bar), wifiInfo.getSSID()));
+    }
+
+    //test wifi parameters and edit in datebase
+    private void testRoom(String nameRoom)
+    {
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+        RoomInfo roomInfo = new RoomInfo(
+                wifiInfo.getRssi(),
+                wifiInfo.getLinkSpeed(),
+                nameRoom
+        );
+
+        mMyDBHandler.editRoomInfo(nameRoom, roomInfo);
     }
 
     //create dialog to add new room and add created room to datebase
@@ -216,26 +224,26 @@ public class HomeTesting extends Fragment
         builder.setView(input);
 
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton)
             {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton)
-                {
-                    String value = input.getText().toString();
-                    mMyDBHandler.addRoomInfo(new RoomInfo(0, 0, value));
-                    updateTestingRooms();
+                String value = input.getText().toString();
+                mMyDBHandler.addRoomInfo(new RoomInfo(0, 0, value));
+                updateView();
 
-                    return;
-                }
-            });
+                return;
+            }
+        });
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
             {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    return;
-                }
-            });
+                return;
+            }
+        });
 
         return builder.create();
     }
@@ -262,7 +270,7 @@ public class HomeTesting extends Fragment
                 {
                     String value = input.getText().toString();
                     mMyDBHandler.editOnlyRoomNameInRoomInfo(mNameSelected, value);
-                    updateTestingRooms();
+                    updateView();
                     restoreSelected();
 
                     return;
@@ -270,13 +278,13 @@ public class HomeTesting extends Fragment
             });
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
             {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    return;
-                }
-            });
+                return;
+            }
+        });
 
         return builder.create();
     }
@@ -343,64 +351,6 @@ public class HomeTesting extends Fragment
             close();
         }
 
-        //clear datebase and restore default rooms
-        public void deleteAllAndRestoreDefaultRooms()
-        {
-            final int sizeDefaultRooms = 5;
-            final String [] roomTab1 = {
-                    "OFFICE",
-                    "BEDROOM",
-                    "LIVING ROOM",
-                    "KITCHEN",
-                    "BATHROOM"
-            };
-
-            for (int i = 0; i < sizeDefaultRooms; i++ )
-            {
-                mMyDBHandler.addRoomInfo(new RoomInfo(0, 0, roomTab1[i]));
-            }
-
-            final String query[] = new String[]{
-                    MyDBHandler.COLUMN_ID,
-                    MyDBHandler.COLUMN_ROOM_NAME,
-                    MyDBHandler.COLUMN_LINK_SPEED,
-                    MyDBHandler.COLUMN_RSSI,
-                    MyDBHandler.COLUMN_LAST_LINK_SPEED,
-                    MyDBHandler.COLUMN_LAST_RSSI
-            };
-
-            SQLiteDatabase db = this.getWritableDatabase();
-
-            Cursor cursor = db.query(
-                    MyDBHandler.TABLE_ROOMS,
-                    query,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-            );
-
-            db.delete(MyDBHandler.TABLE_ROOMS, "1", null);
-
-            cursor.close();
-            db.close();
-
-            final String [] roomTab = {
-                    "OFFICE",
-                    "BEDROOM",
-                    "LIVING ROOM",
-                    "KITCHEN",
-                    "BATHROOM"
-            };
-
-            for (int i = 0; i < sizeDefaultRooms; i++ )
-            {
-                mMyDBHandler.addRoomInfo(new RoomInfo(0, 0, roomTab[i]));
-            }
-
-        }
-
         //get each room from datebase
         public ArrayList<RoomInfo> getAllRoomsInfos()
         {
@@ -447,6 +397,35 @@ public class HomeTesting extends Fragment
             return result;
         }
 
+        //find room from datebase
+        public RoomInfo findRoomInfo(String roomName)
+        {
+            String query = "Select * FROM " + TABLE_ROOMS + " WHERE " + COLUMN_ROOM_NAME + " =  \"" + roomName + "\"";
+
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            Cursor cursor = db.rawQuery(query, null);
+
+            RoomInfo roomInfoHelp = new RoomInfo();
+
+            if (cursor.moveToFirst()) {
+                cursor.moveToFirst();
+                roomInfoHelp.setId(cursor.getInt(0));
+                roomInfoHelp.setRoomName(cursor.getString(1));
+                roomInfoHelp.setLinkSpeed(cursor.getFloat(2));
+                roomInfoHelp.setRssi(cursor.getFloat(3));
+                roomInfoHelp.setLastLinkSpeed(cursor.getFloat(4));
+                roomInfoHelp.setLastRssi(cursor.getFloat(5));
+
+                cursor.close();
+            } else {
+                roomInfoHelp = null;
+            }
+            db.close();
+
+            return  roomInfoHelp;
+        }
+
         //edit column RoomName to new RoomName, other columns are the same
         public boolean editOnlyRoomNameInRoomInfo(String oldRoomName, String newRoomName)
         {
@@ -476,35 +455,6 @@ public class HomeTesting extends Fragment
             db.close();
 
             return result;
-        }
-
-        //find room from datebase
-        public RoomInfo findRoomInfo(String roomName)
-        {
-            String query = "Select * FROM " + TABLE_ROOMS + " WHERE " + COLUMN_ROOM_NAME + " =  \"" + roomName + "\"";
-
-            SQLiteDatabase db = this.getWritableDatabase();
-
-            Cursor cursor = db.rawQuery(query, null);
-
-            RoomInfo roomInfoHelp = new RoomInfo();
-
-            if (cursor.moveToFirst()) {
-                cursor.moveToFirst();
-                roomInfoHelp.setId(cursor.getInt(0));
-                roomInfoHelp.setRoomName(cursor.getString(1));
-                roomInfoHelp.setLinkSpeed(cursor.getFloat(2));
-                roomInfoHelp.setRssi(cursor.getFloat(3));
-                roomInfoHelp.setLastLinkSpeed(cursor.getFloat(4));
-                roomInfoHelp.setLastRssi(cursor.getFloat(5));
-
-                cursor.close();
-            } else {
-                roomInfoHelp = null;
-            }
-            db.close();
-
-            return  roomInfoHelp;
         }
 
         //edit all columns where RoomName
@@ -546,6 +496,31 @@ public class HomeTesting extends Fragment
             return result;
         }
 
+        //clear datebase and restore default rooms
+        public void deleteAllAndRestoreDefaultRooms()
+        {
+            final int sizeDefaultRooms = 5;
+
+            final String [] roomTab = {
+                    "OFFICE",
+                    "BEDROOM",
+                    "LIVING ROOM",
+                    "KITCHEN",
+                    "BATHROOM"
+            };
+
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            db.delete(MyDBHandler.TABLE_ROOMS, "1", null);
+
+            db.close();
+
+            for (int i = 0; i < sizeDefaultRooms; i++ )
+            {
+                mMyDBHandler.addRoomInfo(new RoomInfo(0, 0, roomTab[i]));
+            }
+        }
+
         //delete from datebase where RoomName
         public boolean deleteRoomInfo(String roomName)
         {
@@ -580,13 +555,9 @@ public class HomeTesting extends Fragment
         private String roomName;
         private float linkSpeed;
         private float rssi;
-
         private float lastRssi;
         private float lastLinkSpeed;
-
         private int id;
-
-
 
         public RoomInfo()
         {
