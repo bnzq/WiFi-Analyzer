@@ -45,6 +45,35 @@ public class Utility
         }
     }
 
+    public static int convertRssiToQualityWithSub(int dBm, int sub)
+    {
+        int dBmFirst;
+
+        if( dBm <= - 100)
+        {
+            dBmFirst = 0;
+        }
+        else if (dBm == 0)
+        {
+            dBmFirst = 0;
+        }
+        else if (dBm >= -50)
+        {
+            dBmFirst =  100;
+        }
+        else
+        {
+            dBmFirst = 2 * (dBm + 100);
+        }
+
+        dBmFirst -= sub;
+
+        if (dBmFirst < 0)
+            return 0;
+        else
+            return dBmFirst;
+    }
+
     public static int convertQualityToStepsQuality(int quality, int steps)
     {
         int a = 100 / steps;

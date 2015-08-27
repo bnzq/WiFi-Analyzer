@@ -2,6 +2,7 @@ package com.example.dominik.wifi_analyzer;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,9 +61,11 @@ public class HomeTestingAdapter extends ArrayAdapter<String[]>
             viewHolder.progressBarQualityNow.setProgress(qualityNow);
             viewHolder.progressBarQualityLast.setProgress(qualityLast);
             viewHolder.progressBarQualityNowView.setText(String.format(
-                    context.getResources().getString(R.string.ns_percent_textView), qualityNow));
+                    context.getResources().getString(R.string.ns_percent_textView), qualityNow
+            ));
             viewHolder.progressBarQualityLastView.setText(String.format(
-                    context.getResources().getString(R.string.ns_percent_textView), qualityLast));
+                    context.getResources().getString(R.string.ns_percent_textView), qualityLast
+            ));
 
             viewHolder.progressBarSpeedNow.setProgress(Float.valueOf(tab[LINK_SPEED_TAB]).intValue());
             viewHolder.progressBarSpeedLast.setProgress(Float.valueOf(tab[LAST_LINK_SPEED_TAB]).intValue());
@@ -71,6 +74,7 @@ public class HomeTestingAdapter extends ArrayAdapter<String[]>
             viewHolder.progressBarSpeedLastView.setText(String.format(
                     context.getResources().getString(R.string.ns_Mbps_textView), Float.valueOf(tab[LAST_LINK_SPEED_TAB]).intValue()));
         }
+
     }
 
     public static class ViewHolder

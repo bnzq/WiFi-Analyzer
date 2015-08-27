@@ -64,4 +64,16 @@
     <string name="ci_recommended_bar">Recommended: %1$d, %2$d, %3$d </string>
     <string name="ci_valuation_bar">%1$d / 10 </string>
 
+    <string name="cia_channel">Ch: %1$d </string>
+    <string name="cia_valuation_progressbar">%1$d %% </string>
+    <string name="cia_valuation">%1$d / 10 </string>
+
+    <string name="ci_channel_static_textview">Channel</string>
+    <string name="ci_valuation_static_textview">Used bandwidth</string>
+    <string name="ci_networks_static_textview">Net-s</string>
+    <string name="ci_scroll_info_static_textview">Scroll up/down to see graph/valuation</string>
+    <string name="ci_channel_recommended_static_textview">Recommended</string>
+
+
+
 </resources>
