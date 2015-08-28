@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style ="@style/NT_FontNetworkStatus"
+                style ="@style/Standard_Font"
                 android:text="@string/ns_frequency_static_textView"
                 android:id="@+id/frequency_static_textView"
                 android:layout_gravity="center_vertical"
@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style ="@style/NT_FontNetworkStatus"
+                style ="@style/Standard_Font"
                 android:text=""
                 android:id="@+id/frequency_textView"
                 android:padding="2dp"
@@ -104,7 +104,7 @@
                         android:layout_weight="0.6"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style ="@style/NT_FontNetworkStatus"
+                        style ="@style/Standard_Font"
                         android:text="@string/ns_capabilities_textView"
                         android:id="@+id/capabilities_textView"
                         android:singleLine="true"
@@ -120,7 +120,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style ="@style/NT_FontNetworkStatus"
+                            style ="@style/Standard_Font"
                             android:text="@string/ns_channel_static_textView"
                             android:singleLine="true"
                             android:id="@+id/channel_static_textView"
@@ -129,7 +129,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style ="@style/NT_FontNetworkStatus"
+                            style ="@style/Standard_Font"
                             android:text=""
                             android:singleLine="true"
                             android:id="@+id/channel_textView"
@@ -162,13 +162,13 @@
                         android:visibility="visible"
                         android:paddingLeft="7dp"
                         android:paddingRight="10dp"
-                        android:progressDrawable="@drawable/ns_progress_bar"
+                        android:progressDrawable="@drawable/blue_progress_bar"
                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style ="@style/NT_FontNetworkStatus"
+                        style ="@style/Standard_Font"
                         android:text=""
                         android:singleLine="true"
                         android:id="@+id/strength_percent_progressbar_textView"
@@ -188,7 +188,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style ="@style/NT_FontNetworkStatus"
+                        style ="@style/Standard_Font"
                         android:text="@string/ns_strength_percent_static_textView"
                         android:id="@+id/strength_percent_static_textView"
                         android:singleLine="true"
@@ -197,7 +197,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style ="@style/NT_FontNetworkStatus"
+                        style ="@style/Standard_Font"
                         android:text=""
                         android:singleLine="true"
                         android:id="@+id/strength_percent_textView"

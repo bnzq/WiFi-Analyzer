@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class Utility
 {
-
     public static int convertFrequencyToChannel(int freq)
     {
         if (freq >= 2412 && freq <= 2484)
@@ -128,6 +127,7 @@ public class Utility
         Random rand = new Random();
         float[] hsv = new float[3];
         Color.RGBToHSV(rand.nextInt(255), rand.nextInt(255),rand.nextInt(255), hsv);
+
         return Color.HSVToColor(hsv);
     }
 

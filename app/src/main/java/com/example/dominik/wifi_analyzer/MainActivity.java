@@ -135,7 +135,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             switch (position) {
                 case 0:
                     // Top Rated fragment activity
-                    return new ChannelInterference();
+                    return new Graph();
                 case 1:
                     // Games fragment activity
                     return new NetworkStatus();
@@ -144,7 +144,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     return new HomeTesting();
                 case 3:
                     // Movies fragment activity
-                    return new Tab4Fragment();
+                    return new ChannelInterference();
                 case 4:
                     // Movies fragment activity
                     return new Tab5Fragment();

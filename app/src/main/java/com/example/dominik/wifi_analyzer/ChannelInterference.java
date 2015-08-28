@@ -11,7 +11,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,39 +50,19 @@ public class ChannelInterference extends Fragment
     final private static short sDBm2ndFactor = 20;
     final private static short sDBm3rdFactor = 40;
 
-
+    private ViewHolder viewHolder;
     private WifiScanReceiver mWifiReceiver;
     private WifiManager mWifiManager;
-    private LinearLayout mChartChannels;
     private ValuationChannelAdapter mValuationChannelAdapter;
     private HashMap<String, Integer> mSsidColorMap = new HashMap<String, Integer>();
-
-    TextView connectedView;
-    TextView valuationProgressBarView;
-    TextView channelView;
-    TextView networksOnThisChannelView;
-    TextView recommendedView;
-
-    ProgressBar valuationProgressBar;
-
-    ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.channel_interference_tab, container, false);
-        mChartChannels = (LinearLayout) rootView.findViewById(R.id.ci_channel_chart);
 
-        connectedView = (TextView) rootView.findViewById(R.id.ci_connected_textview);
-        valuationProgressBarView = (TextView) rootView.findViewById(R.id.ci_valuation_progressbar_textView);
-        channelView = (TextView) rootView.findViewById(R.id.ci_channel_textview);
-        networksOnThisChannelView = (TextView) rootView.findViewById(R.id.ci_numbers_of_networks_on_this_ch_textview);
-        recommendedView = (TextView) rootView.findViewById(R.id.ci_recommended_textview);
-
-        valuationProgressBar = (ProgressBar) rootView.findViewById(R.id.ci_valuation_progressbar);
-
-        listView = (ListView) rootView.findViewById(R.id.valuation_channels_listview);
+        viewHolder = new ViewHolder(rootView);
 
         update();
 
@@ -117,6 +96,7 @@ public class ChannelInterference extends Fragment
         super.onResume();
     }
 
+    //update all items in gui
     private void update()
     {
         Utility.enableWifi(mWifiManager);
@@ -141,24 +121,27 @@ public class ChannelInterference extends Fragment
         updateValuationList(wifiScanList, connectionInfo);
     }
 
+    //draw graph with networks
     private void updateChart(List<ScanResult> wifiScanList, HashMap<Short, String> connectionInfo)
     {
         WifiChart wifiChart = new WifiChart(wifiScanList, sNumberOfChannels);
         wifiChart.init();
         wifiChart.setValues(connectionInfo.get(SSID_CONNECTED_NETWORK));
 
-        mChartChannels.addView(wifiChart.getmChartView(), 0);
+        viewHolder.mChartChannels.addView(wifiChart.getmChartView(), 0);
     }
 
+    //update info in bar that don't need valuation
     private void updateInfoBar(int size, int freq , String ssid)
     {
         Resources resources = getResources();
 
-        connectedView.setText(String.format(resources.getString(R.string.connected_bar), ssid));
-        channelView.setText(String.format(resources.getString(R.string.ci_channel_bar), Utility.convertFrequencyToChannel(freq)));
-        networksOnThisChannelView.setText(String.format(resources.getString(R.string.ci_number_of_networks_on_this_channel_bar), size));
+        viewHolder.connectedView.setText(String.format(resources.getString(R.string.connected_bar), ssid));
+        viewHolder.channelView.setText(String.format(resources.getString(R.string.ci_channel_bar), Utility.convertFrequencyToChannel(freq)));
+        viewHolder.networksOnThisChannelView.setText(String.format(resources.getString(R.string.ci_number_of_networks_on_this_channel_bar), size));
     }
 
+    //draw and find best channels
     private void updateValuationList(List<ScanResult> wifiScanList, HashMap<Short, String> connectionInfo)
     {
         List<String[]> list = new ArrayList<String[]>();
@@ -171,33 +154,35 @@ public class ChannelInterference extends Fragment
         {
             String [] wifiDetails = new String[ValuationChannelAdapter.SIZE_TAB];
 
-                wifiDetails[ValuationChannelAdapter.CHANNEL_TAB] = String.valueOf(i + 1);
-                wifiDetails[ValuationChannelAdapter.VALUATION_PERCENT_TAB] = String.valueOf(valuation_percent[i + 2]);
-                wifiDetails[ValuationChannelAdapter.NETWORKS_ON_THIS_CHANNEL] = String.valueOf(networksOnChannel[i]);
-                wifiDetails[ValuationChannelAdapter.VALUATION_PERCENT_RECOMMENDED_TAB] = String.valueOf(valuation_percent_recommended[i]);
+            wifiDetails[ValuationChannelAdapter.CHANNEL_TAB] = String.valueOf(i + 1);
+            wifiDetails[ValuationChannelAdapter.VALUATION_PERCENT_TAB] = String.valueOf(valuation_percent[i + 2]);
+            wifiDetails[ValuationChannelAdapter.NETWORKS_ON_THIS_CHANNEL] = String.valueOf(networksOnChannel[i]);
+            wifiDetails[ValuationChannelAdapter.VALUATION_PERCENT_RECOMMENDED_TAB] = String.valueOf(valuation_percent_recommended[i]);
 
             list.add(wifiDetails);
         }
 
-        valuationProgressBar.setProgress(valuation_percent_recommended[
-                Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1]);
-        valuationProgressBarView.setText(String.format(
-                getResources().getString(R.string.cia_valuation),
+        viewHolder.valuationProgressBar.setProgress(valuation_percent_recommended[
+                Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1]
+        );
+        viewHolder.valuationProgressBarView.setText(String.format(
+                getResources().getString(R.string.valuation),
                 valuation_percent_recommended[
-                        Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1]/10
+                        Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1] / 10
         ));
 
-        int tab[] = getRecommendedChannels(valuation_percent_recommended);
-        recommendedView.setText(String.format(getResources().getString(R.string.ci_recommended_bar), tab[0], tab[1], tab[2]));
+        int recommendedChannels[] = getRecommendedChannels(valuation_percent_recommended);
+        viewHolder.recommendedView.setText(String.format(getResources().getString(R.string.ci_recommended_bar),
+                recommendedChannels[0], recommendedChannels[1], recommendedChannels[2]
+        ));
 
         mValuationChannelAdapter = new ValuationChannelAdapter( getActivity(), list);
-        listView.setAdapter(mValuationChannelAdapter);
-
+        viewHolder.listView.setAdapter(mValuationChannelAdapter);
     }
 
+    //vevaluation of all bandwidths on the basis of available networks
     private int[] valuateChannels(List<ScanResult> wifiScanList)
     {
-
         int[] result = new int[sAllChannels];
 
         for (int i = 0; i < sAllChannels; i++)
@@ -225,9 +210,9 @@ public class ChannelInterference extends Fragment
         return result;
     }
 
+    //evaluation in way that connected network is not taken into account
     private int[] valuateChannelsWithoutConnected(List<ScanResult> wifiScanList)
     {
-
         int[] result = new int[sAllChannels];
 
         for (int i = 0; i < sAllChannels; i++)
@@ -257,17 +242,18 @@ public class ChannelInterference extends Fragment
             result[i] /= 5;
         }
 
-        int med[] = new int[sNumberOfChannels];
+        int averages[] = new int[sNumberOfChannels];
 
         for (int i = 2; i < sAllChannels - 2; i++)
         {
             int sum = result[i - 2] + result[i - 2] + result[i] + result[i + 1] + result[i + 2];
-            med[i - 2] = sum / 5;
+            averages[i - 2] = sum / 5;
         }
 
-        return med;
+        return averages;
     }
 
+    //get numbers of networks on each channel
     private int[] getNumberOfNetworksOnChannels(List<ScanResult> wifiScanList)
     {
         int[] result = new int[sNumberOfChannels];
@@ -285,45 +271,47 @@ public class ChannelInterference extends Fragment
         return result;
     }
 
+    //get three best channels on the basis of valuateChannelsWithoutConnected
     private int [] getRecommendedChannels(int [] ints)
     {
-        int [] rec = new int[3];
-
-        int tmp1 = 0, tmp2 = 0, tmp3 = 0;
-        int tmp11 = 0, tmp22 = 0, tmp33 = 0;
+        int best1 = 0, best2 = 0, best3 = 0;
+        int ch1 = 0, ch2 = 0, ch3 = 0;
 
         for (int i = 0; i < ints.length; i++)
         {
-            if(tmp1 < ints[i])
+            if(best1 < ints[i])
             {
-                tmp3 = tmp2;
-                tmp2 = tmp1;
-                tmp1 = ints[i];
-                tmp33 = tmp22;
-                tmp22 = tmp11;
-                tmp11 = i;
+                best3 = best2;
+                best2 = best1;
+                best1 = ints[i];
+                ch3 = ch2;
+                ch2 = ch1;
+                ch1 = i;
             }
-            else if (tmp2 < ints[i])
+            else if (best2 < ints[i])
             {
-                tmp3 = tmp2;
-                tmp2 = ints[i];
-                tmp33 = tmp22;
-                tmp22 = i;
+                best3 = best2;
+                best2 = ints[i];
+                ch3 = ch2;
+                ch2 = i;
             }
-            else if (tmp3 < ints[i])
+            else if (best3 < ints[i])
             {
-                tmp3 = ints[i];
-                tmp33 = i;
+                best3 = ints[i];
+                ch3 = i;
             }
         }
 
-        rec[0] = tmp11 + 1;
-        rec[1] = tmp22 + 1;
-        rec[2] = tmp33 + 1;
+        int [] rec = new int[3];
+
+        rec[0] = ch1 + 1;
+        rec[1] = ch2 + 1;
+        rec[2] = ch3 + 1;
 
         return rec;
     }
 
+    //get parameters about conneced network
     private HashMap<Short, String> getInfoAboutCurrentConnection(WifiInfo wifiInfo, List<ScanResult> wifiScanList)
     {
         HashMap<Short, String> hashMap = new HashMap<>();
@@ -450,15 +438,6 @@ public class ChannelInterference extends Fragment
             mChartView =  ChartFactory.getLineChartView(getActivity(), mDataset, mRenderer);
             return mChartView;
         }
-
-    }
-
-    private class WifiScanReceiver extends BroadcastReceiver
-    {
-        public void onReceive(Context c, Intent intent)
-        {
-            update();
-        }
     }
 
     private class ValuationChannelAdapter extends ArrayAdapter<String[]>
@@ -536,5 +515,43 @@ public class ChannelInterference extends Fragment
             }
         }
 
+    }
+
+    private class WifiScanReceiver extends BroadcastReceiver
+    {
+        public void onReceive(Context c, Intent intent)
+        {
+            update();
+        }
+    }
+
+    public class ViewHolder
+    {
+        public final TextView connectedView;
+        public final TextView valuationProgressBarView;
+        public final TextView channelView;
+        public final TextView networksOnThisChannelView;
+        public final TextView recommendedView;
+
+        public final ProgressBar valuationProgressBar;
+
+        public final ListView listView;
+
+        public final LinearLayout mChartChannels;
+
+        public ViewHolder(View rootView)
+        {
+            mChartChannels = (LinearLayout) rootView.findViewById(R.id.ci_channel_chart);
+
+            connectedView = (TextView) rootView.findViewById(R.id.ci_connected_textview);
+            valuationProgressBarView = (TextView) rootView.findViewById(R.id.ci_valuation_progressbar_textView);
+            channelView = (TextView) rootView.findViewById(R.id.ci_channel_textview);
+            networksOnThisChannelView = (TextView) rootView.findViewById(R.id.ci_numbers_of_networks_on_this_ch_textview);
+            recommendedView = (TextView) rootView.findViewById(R.id.ci_recommended_textview);
+
+            valuationProgressBar = (ProgressBar) rootView.findViewById(R.id.ci_valuation_progressbar);
+
+            listView = (ListView) rootView.findViewById(R.id.valuation_channels_listview);
+        }
     }
 }

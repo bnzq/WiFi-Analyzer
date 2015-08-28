@@ -25,13 +25,16 @@
     <string name="pref_refresh_rate_5" translatable="false">5</string>
     <string name="pref_refresh_rate_10" translatable="false">10</string>
 
-    <string name="ns_title_dialog_refresh_rate">Select automatic scanning time (s)</string>
     <string name="title_activity_settings">Settings</string>
 
-    <string name="ns_ssid_bssid_textview">%1$s [%2$s] </string>
+    <string name="two_strings_textView">%1$s [%2$s] </string>
 
-    <string name="ns_percent_textView">%1$s %%</string>
-    <string name="ns_Mbps_textView">%1$s Mbps</string>
+    <string name="percent_textView">%1$s %%</string>
+    <string name="Mbps_textView">%1$s Mbps</string>
+    <string name="connected_bar">Connected: %1$s</string>
+    <string name="valuation">%1$d / 10 </string>
+
+    <string name="ns_title_dialog_refresh_rate">Select automatic scanning time (s)</string>
 
     <string name="ns_channel_static_textView">C:</string>
     <string name="ns_strength_percent_static_textView">S:</string>
@@ -39,8 +42,7 @@
 
     <string name="ns_capabilities_textView">Encryption: %1$s</string>
 
-    <string name="connected_bar">Connected: %1$s</string>
-    <string name="ns_interval_bar">Interval: %1$s s</string>
+    <string name="ns_interval">Interval: %1$s s</string>
     <string name="ns_ip">IP: %1$s </string>
     <string name="ns_speed">Speed: %1$s Mbps</string>
     <string name="ns_number_of_available_network">Wireless networks: %1$s</string>
@@ -57,23 +59,26 @@
     <string name="ht_now_static">Now: </string>
     <string name="ht_last_static">Last: </string>
 
+    <string name="ht_add_room_dialog_title">Add room</string>
+    <string name="ht_add_room_dialog_message">Room name: </string>
+    <string name="ht_edit_room_dialog_title">Edit room</string>
+    <string name="ht_edit_room_dialog_message">New room name: </string>
+    <string name="ok_text">Ok</string>
+    <string name="cancel_text">Cancel</string>
+
     <string name="ci_filter_bar">Filter: 2,4 GHz</string>
     <string name="ci_channel_bar">Channel: %1$s</string>
     <string name="ci_number_of_networks_on_this_channel_bar">Networks on this channel: %1$d</string>
     <string name="ci_valuation_static_bar">Valuation: </string>
     <string name="ci_recommended_bar">Recommended: %1$d, %2$d, %3$d </string>
-    <string name="ci_valuation_bar">%1$d / 10 </string>
 
     <string name="cia_channel">Ch: %1$d </string>
     <string name="cia_valuation_progressbar">%1$d %% </string>
-    <string name="cia_valuation">%1$d / 10 </string>
 
     <string name="ci_channel_static_textview">Channel</string>
     <string name="ci_valuation_static_textview">Used bandwidth</string>
     <string name="ci_networks_static_textview">Net-s</string>
     <string name="ci_scroll_info_static_textview">Scroll up/down to see graph/valuation</string>
     <string name="ci_channel_recommended_static_textview">Recommended</string>
-
-
 
 </resources>

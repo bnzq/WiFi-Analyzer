@@ -18,7 +18,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,16 +37,7 @@ public class HomeTesting extends Fragment
     private HomeTestingAdapter mHomeTestingAdapter;
     private int mPositionSelected = -1;
     private String mNameSelected = "";
-
-    Button addButton;
-    Button delButton;
-    Button editButton;
-    Button defButton;
-    Button testButton;
-
-    TextView connectedView;
-
-    ListView mListView;
+    private ViewHolder viewHolder;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -61,87 +54,7 @@ public class HomeTesting extends Fragment
     {
         View rootView = inflater.inflate(R.layout.home_testing_tab, container, false);
 
-        addButton = (Button) rootView.findViewById(R.id.add_room_button);
-        delButton = (Button) rootView.findViewById(R.id.del_room_button);
-        editButton = (Button) rootView.findViewById(R.id.edit_room_button);
-        defButton = (Button) rootView.findViewById(R.id.def_room_button);
-        testButton = (Button) rootView.findViewById(R.id.home_testing_test_button);
-
-        connectedView = (TextView) rootView.findViewById(R.id.ht_connected_textview);
-
-        mListView = (ListView) rootView.findViewById(R.id.home_rooms_listview);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                view.setSelected(true);
-                mPositionSelected = position;
-                TextView textView = (TextView) view.findViewById(R.id.room_name_textView);
-                mNameSelected = (String) textView.getText();
-            }
-        });
-
-        testButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (mPositionSelected != -1) {
-                    testRoom(mNameSelected);
-                    updateView();
-                }
-            }
-        });
-
-        addButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Dialog dialog = createAddRoomDialog();
-                dialog.show();
-            }
-        });
-
-        editButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if(mPositionSelected != -1)
-                {
-                    Dialog dialog = createEditRoomDialog();
-                    dialog.show();
-                }
-            }
-        });
-
-        delButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if(mPositionSelected != -1)
-                {
-                    mMyDBHandler.deleteRoomInfo(mNameSelected);
-                    updateView();
-                    restoreSelected();
-                }
-            }
-        });
-
-        defButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mMyDBHandler.deleteAllAndRestoreDefaultRooms();
-                updateView();
-            }
-        });
-
+        viewHolder = new ViewHolder(rootView);
 
         mMyDBHandler = new MyDBHandler(getActivity());
 
@@ -172,27 +85,24 @@ public class HomeTesting extends Fragment
         {
             String[] wifiDetails = new String[HomeTestingAdapter.SIZE_TAB];
 
-            for (int j = 0; j < HomeTestingAdapter.SIZE_TAB; j++)
-            {
-                wifiDetails[HomeTestingAdapter.ROOM_NAME_TAB] = roomInfoList.get(i).getRoomName();
-                wifiDetails[HomeTestingAdapter.LINK_SPEED_TAB] = Float.toString(roomInfoList.get(i).getLinkSpeed());
-                wifiDetails[HomeTestingAdapter.RSSI_TAB] = Float.toString(roomInfoList.get(i).getRssi());
-                wifiDetails[HomeTestingAdapter.LAST_LINK_SPEED_TAB] = Float.toString(roomInfoList.get(i).getLastLinkSpeed());;
-                wifiDetails[HomeTestingAdapter.LAST_RSSI_TAB] = Float.toString(roomInfoList.get(i).getLastRssi());
-            }
+            wifiDetails[HomeTestingAdapter.ROOM_NAME_TAB] = roomInfoList.get(i).getRoomName();
+            wifiDetails[HomeTestingAdapter.LINK_SPEED_TAB] = Float.toString(roomInfoList.get(i).getLinkSpeed());
+            wifiDetails[HomeTestingAdapter.RSSI_TAB] = Float.toString(roomInfoList.get(i).getRssi());
+            wifiDetails[HomeTestingAdapter.LAST_LINK_SPEED_TAB] = Float.toString(roomInfoList.get(i).getLastLinkSpeed());;
+            wifiDetails[HomeTestingAdapter.LAST_RSSI_TAB] = Float.toString(roomInfoList.get(i).getLastRssi());
 
             list.add(wifiDetails);
         }
 
         mHomeTestingAdapter = new HomeTestingAdapter(getActivity(), list);
-        mListView.setAdapter(mHomeTestingAdapter);
+        viewHolder.mListView.setAdapter(mHomeTestingAdapter);
     }
 
     //update info about connected info in simple bar
     private void updateInfoBar()
     {
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
-        connectedView.setText(String.format(getActivity().getResources().getString(R.string.connected_bar), wifiInfo.getSSID()));
+        viewHolder.connectedView.setText(String.format(getActivity().getResources().getString(R.string.connected_bar), wifiInfo.getSSID()));
     }
 
     //test wifi parameters and edit in datebase
@@ -212,8 +122,8 @@ public class HomeTesting extends Fragment
     private Dialog createAddRoomDialog()
     {
 
-        final String title = "Add Room";
-        final String message = "Room Name: ";
+        final String title = getString(R.string.ht_add_room_dialog_title);
+        final String message = getString(R.string.ht_add_room_dialog_message);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title);
@@ -223,7 +133,7 @@ public class HomeTesting extends Fragment
         input.setId(TEXT_ID);
         builder.setView(input);
 
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        builder.setPositiveButton(getString(R.string.ok_text), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int whichButton)
@@ -236,7 +146,7 @@ public class HomeTesting extends Fragment
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        builder.setNegativeButton(getString(R.string.cancel_text), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -252,8 +162,8 @@ public class HomeTesting extends Fragment
     private Dialog createEditRoomDialog()
     {
 
-        final String title = "Edit Room";
-        final String message = "New Room Name: ";
+        final String title = getString(R.string.ht_edit_room_dialog_title);
+        final String message = getString(R.string.ht_edit_room_dialog_message);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title);
@@ -263,7 +173,7 @@ public class HomeTesting extends Fragment
         input.setId(TEXT_ID);
         builder.setView(input);
 
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        builder.setPositiveButton(getString(R.string.ok_text), new DialogInterface.OnClickListener()
             {
                 @Override
                 public void onClick(DialogInterface dialog, int whichButton)
@@ -277,7 +187,7 @@ public class HomeTesting extends Fragment
                 }
             });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        builder.setNegativeButton(getString(R.string.cancel_text), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -653,4 +563,101 @@ public class HomeTesting extends Fragment
         }
     }
 
+    public class ViewHolder
+    {
+        public final Button addButton;
+        public final Button delButton;
+        public final Button editButton;
+        public final Button defButton;
+        public final Button testButton;
+
+        public final TextView connectedView;
+
+        public final ListView mListView;
+
+        public ViewHolder(View rootView)
+        {
+            addButton = (Button) rootView.findViewById(R.id.add_room_button);
+            delButton = (Button) rootView.findViewById(R.id.del_room_button);
+            editButton = (Button) rootView.findViewById(R.id.edit_room_button);
+            defButton = (Button) rootView.findViewById(R.id.def_room_button);
+            testButton = (Button) rootView.findViewById(R.id.home_testing_test_button);
+
+            connectedView = (TextView) rootView.findViewById(R.id.ht_connected_textview);
+
+            mListView = (ListView) rootView.findViewById(R.id.home_rooms_listview);
+
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    view.setSelected(true);
+                    mPositionSelected = position;
+                    TextView textView = (TextView) view.findViewById(R.id.room_name_textView);
+                    mNameSelected = (String) textView.getText();
+                }
+            });
+
+            testButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (mPositionSelected != -1) {
+                        testRoom(mNameSelected);
+                        updateView();
+                    }
+                }
+            });
+
+            addButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Dialog dialog = createAddRoomDialog();
+                    dialog.show();
+                }
+            });
+
+            editButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if(mPositionSelected != -1)
+                    {
+                        Dialog dialog = createEditRoomDialog();
+                        dialog.show();
+                    }
+                }
+            });
+
+            delButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if(mPositionSelected != -1)
+                    {
+                        mMyDBHandler.deleteRoomInfo(mNameSelected);
+                        updateView();
+                        restoreSelected();
+                    }
+                }
+            });
+
+            defButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mMyDBHandler.deleteAllAndRestoreDefaultRooms();
+                    updateView();
+                }
+            });
+
+        }
+    }
 }

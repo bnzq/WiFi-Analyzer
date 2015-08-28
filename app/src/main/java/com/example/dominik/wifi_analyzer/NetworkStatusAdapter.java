@@ -54,7 +54,7 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
             String[] tab = getItem(position);
 
             viewHolder.ssidView.setText(String.format(
-                    context.getString(R.string.ns_ssid_bssid_textview), tab[SSID_TAB], tab[BSSID_TAB]
+                    context.getString(R.string.two_strings_textView), tab[SSID_TAB], tab[BSSID_TAB]
             ));
             viewHolder.channelView.setText(Integer.toString(
                         Utility.convertFrequencyToChannel(Integer.valueOf(tab[FREQUENCY_TAB]))
@@ -70,7 +70,7 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
             viewHolder.progressBar.setMax(100);
             viewHolder.progressBar.setProgress(quality);
             viewHolder.strengthProgressBarView.setText(String.format(
-                    context.getResources().getString(R.string.ns_percent_textView), quality
+                    context.getResources().getString(R.string.percent_textView), quality
             ));
 
             if(tab[IS_CONNECTED].equals("1"))
@@ -98,7 +98,6 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
             {
                 viewHolder.imageView.setImageResource(R.mipmap.ic_launchere5);
             }
-
         }
     }
 
@@ -127,5 +126,4 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
             progressBar =  (ProgressBar) view.findViewById(R.id.ns_quality_progressbar);
         }
     }
-
 }
