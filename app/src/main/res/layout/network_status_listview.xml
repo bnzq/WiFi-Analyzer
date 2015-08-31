@@ -80,7 +80,7 @@
         <ImageView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/wireless_0"
         android:layout_weight="0.2"
         android:id="@+id/ns_wifi_strength_imageview"
         android:padding="2dp"

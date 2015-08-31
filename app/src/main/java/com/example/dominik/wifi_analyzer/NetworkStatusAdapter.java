@@ -80,23 +80,23 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
 
             if(Utility.convertQualityToStepsQuality(quality,5) == 1)
             {
-                viewHolder.imageView.setImageResource(R.mipmap.ic_launcher1);
+                viewHolder.imageView.setImageResource(R.mipmap.wireless_0);
             }
             else if (Utility.convertQualityToStepsQuality(quality,5) == 2)
             {
-                viewHolder.imageView.setImageResource(R.mipmap.ic_launcher2);
+                viewHolder.imageView.setImageResource(R.mipmap.wireless_1);
             }
             else if (Utility.convertQualityToStepsQuality(quality,5) == 3)
             {
-                viewHolder.imageView.setImageResource(R.mipmap.ic_launchere3);
+                viewHolder.imageView.setImageResource(R.mipmap.wireless_2);
             }
             else if (Utility.convertQualityToStepsQuality(quality,5) == 4)
             {
-                viewHolder.imageView.setImageResource(R.mipmap.ic_launchere4);
+                viewHolder.imageView.setImageResource(R.mipmap.wireless_3);
             }
             else if (Utility.convertQualityToStepsQuality(quality,5) == 5)
             {
-                viewHolder.imageView.setImageResource(R.mipmap.ic_launchere5);
+                viewHolder.imageView.setImageResource(R.mipmap.wireless_4);
             }
         }
     }

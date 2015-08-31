@@ -346,8 +346,8 @@ public class ChannelInterference extends Fragment
 
         private GraphicalView mChartView;
 
-        private final String LABEL_X = "Channel";
-        private final String LABEL_Y = "Strength (dBm)";
+        private final String LABEL_X = getString(R.string.ci_labelx);
+        private final String LABEL_Y = getString(R.string.ci_labely);
         private final List<ScanResult> mWifiScanList;
 
         private final short numberOfChannels;

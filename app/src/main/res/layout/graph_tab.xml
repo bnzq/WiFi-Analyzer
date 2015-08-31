@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#0f04ff" >
+    android:background="@color/primary_dark_material_dark" >
 
-    <TextView android:layout_width="fill_parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Cos tam cos tam"
-        android:textSize="20dp"
-        android:layout_centerInParent="true"/>
+        android:orientation="horizontal"
+        android:background="@color/dark_bar"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:id="@+id/sg_connected_textview"
+            style="@style/HT_FontBar"
+            android:text="@string/connected_bar"
+            android:layout_alignParentLeft="true"
+            android:padding="2dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:id="@+id/sg_filter"
+            style="@style/HT_FontBar"
+            android:text="@string/ci_filter_bar"
+            android:layout_alignParentRight="true"
+            android:padding="2dp"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sg_channel_chart"
+        android:orientation="vertical"
+        />
 
 
-</RelativeLayout>
+</LinearLayout>

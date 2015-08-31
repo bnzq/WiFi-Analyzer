@@ -6,12 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class Graph extends Fragment {
+public class ConnectionInfo extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.graph_tab, container, false);
+        View rootView = inflater.inflate(R.layout.connection_info_tab, container, false);
 
         return rootView;
     }

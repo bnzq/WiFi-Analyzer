@@ -81,4 +81,10 @@
     <string name="ci_scroll_info_static_textview">Scroll up/down to see graph/valuation</string>
     <string name="ci_channel_recommended_static_textview">Recommended</string>
 
+    <string name="ci_labelx">Channel</string>
+    <string name="ci_labely">Strength (dBm)</string>
+    <string name="sg_labelx">Time (s)</string>
+    <string name="sg_labely">Strength (dBm)</string>
+
+
 </resources>

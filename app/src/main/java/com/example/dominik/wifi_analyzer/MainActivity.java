@@ -2,10 +2,7 @@ package com.example.dominik.wifi_analyzer;
 
 import java.util.Locale;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -135,7 +132,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             switch (position) {
                 case 0:
                     // Top Rated fragment activity
-                    return new Graph();
+                    return new ConnectionInfo();
                 case 1:
                     // Games fragment activity
                     return new NetworkStatus();
@@ -147,7 +144,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     return new ChannelInterference();
                 case 4:
                     // Movies fragment activity
-                    return new Tab5Fragment();
+                    return new StrengthGraph();
             }
 
             return null;
