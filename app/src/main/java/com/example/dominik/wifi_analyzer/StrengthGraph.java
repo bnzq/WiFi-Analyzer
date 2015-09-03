@@ -27,8 +27,6 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-
 
 public class StrengthGraph extends Fragment
 {
@@ -118,9 +116,13 @@ public class StrengthGraph extends Fragment
 
         mChartChannels.addView(wifiChart.getmChartView(), 0);
 
+        if(wifiInfo.getBSSID() == null)
+            return;
+
         connectedView.setText(String.format(
                 getResources().getString(R.string.connected_bar), wifiInfo.getSSID()
         ));
+
     }
 
     private class WifiChart

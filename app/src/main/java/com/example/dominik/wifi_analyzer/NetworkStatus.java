@@ -13,10 +13,10 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.Formatter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -141,6 +141,10 @@ public class NetworkStatus extends Fragment
 
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
 
+        String bssid = wifiInfo.getBSSID();
+        if( bssid == null)
+            bssid = "";
+
         for (int i = 0; i < wifiScanList.size(); i++)
         {
             String [] wifiDetails = new String[NetworkStatusAdapter.SIZE_TAB];
@@ -151,7 +155,7 @@ public class NetworkStatus extends Fragment
             wifiDetails[NetworkStatusAdapter.FREQUENCY_TAB] = String.valueOf(wifiScanList.get(i).frequency);
             wifiDetails[NetworkStatusAdapter.LEVEL_TAB] = String.valueOf(wifiScanList.get(i).level);
 
-            if(wifiInfo.getBSSID().equals(wifiScanList.get(i).BSSID))
+            if(bssid.equals(wifiScanList.get(i).BSSID))
             {
                 wifiDetails[NetworkStatusAdapter.IS_CONNECTED] = "1";
             }
@@ -173,11 +177,15 @@ public class NetworkStatus extends Fragment
         Resources resources = getResources();
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
 
-        viewHolder.connectedInfoView.setText(String.format(resources.getString(R.string.connected_bar), wifiInfo.getSSID()));
         viewHolder.intervalView.setText(String.format(resources.getString(R.string.ns_interval), mRefreshRateInSec));
+        viewHolder.wirelessNetworksView.setText(String.format(resources.getString(R.string.ns_number_of_available_network), size));
+
+        if(wifiInfo.getBSSID() == null)
+            return;
+
+        viewHolder.connectedInfoView.setText(String.format(resources.getString(R.string.connected_bar), wifiInfo.getSSID()));
         viewHolder.ipView.setText(String.format(resources.getString(R.string.ns_ip), Formatter.formatIpAddress(wifiInfo.getIpAddress())));
         viewHolder.speedView.setText(String.format(resources.getString(R.string.ns_speed), wifiInfo.getLinkSpeed()));
-        viewHolder.wirelessNetworksView.setText(String.format(resources.getString(R.string.ns_number_of_available_network), size));
     }
 
     //create dialog to choice refresh interval

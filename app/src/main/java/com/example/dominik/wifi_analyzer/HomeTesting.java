@@ -19,10 +19,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +102,10 @@ public class HomeTesting extends Fragment
     private void updateInfoBar()
     {
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+
+        if(wifiInfo.getBSSID() == null)
+            return;
+
         viewHolder.connectedView.setText(String.format(getActivity().getResources().getString(R.string.connected_bar), wifiInfo.getSSID()));
     }
 
@@ -110,6 +113,12 @@ public class HomeTesting extends Fragment
     private void testRoom(String nameRoom)
     {
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+
+        if(wifiInfo.getBSSID() == null)
+        {
+            Toast.makeText(getActivity(), getResources().getString(R.string.toast_wifi_disconnected), Toast.LENGTH_SHORT).show();
+            return;
+        }
         RoomInfo roomInfo = new RoomInfo(
                 wifiInfo.getRssi(),
                 wifiInfo.getLinkSpeed(),

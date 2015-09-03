@@ -25,7 +25,7 @@
                 android:singleLine="true"
                 android:id="@+id/cinf_connected_textview"
                 style="@style/HT_FontBar"
-                android:text="Connected: N/N"
+                android:text="@string/default_connected"
                 android:layout_alignParentLeft="true"
                 android:padding="2dp"
                 />
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:id="@+id/cinf_strength_bar_view"
-                android:text="dBm: N/N"
+                android:text="@string/default_dBm"
                 android:padding="5dp"
                 style ="@style/CINF_Font_dBm"
                 />
@@ -301,7 +301,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_ssid_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -311,7 +311,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_bssid_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -321,7 +321,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_mac_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -331,7 +331,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_speed_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -341,7 +341,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_strength_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -351,7 +351,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_encryption_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -361,7 +361,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_channel_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -371,7 +371,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_frequency_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -381,7 +381,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_ip_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -391,7 +391,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_netmask_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -401,7 +401,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_gateway_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -411,7 +411,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_dhcp_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -421,7 +421,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_dns1_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -431,7 +431,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_dns2_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />
@@ -441,7 +441,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:id="@+id/cinf_dhspl_view"
-                        android:text="dBm: N/N"
+                        android:text="@string/default_nn"
                         android:padding="4dp"
                         style ="@style/CINF_Font_Info"
                         />

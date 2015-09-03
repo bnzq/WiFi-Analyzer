@@ -106,4 +106,16 @@
     <string name="cinf_dhspl_view">DHCP lease:</string>
     <string name="cinf_exterip_view">External IP:</string>
 
+    <string name="toast_wifi_disconnected">WiFi is disconnected</string>
+    <string name="default_connected">Connected: N/N</string>
+    <string name="default_dBm">dBm: N/N</string>
+    <string name="default_nn">N/N</string>
+    <string name="default_interval">Interval: N/N</string>
+    <string name="default_ip">IP: N/N</string>
+    <string name="default_speed">Speed: N/N</string>
+    <string name="default_wn">Wireless networks: N/N</string>
+    <string name="default_channel">Channel: N/N</string>
+    <string name="default_networks_on_this_channel">Networks on this channel: N/N</string>
+    <string name="default_recommended">Recommended: N/N</string>
+
 </resources>

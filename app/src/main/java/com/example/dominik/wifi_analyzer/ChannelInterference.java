@@ -50,6 +50,8 @@ public class ChannelInterference extends Fragment
     final private static short sDBm2ndFactor = 20;
     final private static short sDBm3rdFactor = 40;
 
+    final private static String sNN = "N/N";
+
     private ViewHolder viewHolder;
     private WifiScanReceiver mWifiReceiver;
     private WifiManager mWifiManager;
@@ -110,15 +112,19 @@ public class ChannelInterference extends Fragment
         }
 
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
-        HashMap<Short, String> connectionInfo =  getInfoAboutCurrentConnection(wifiInfo, wifiScanList);
 
-        updateInfoBar(Integer.valueOf(connectionInfo.get(NETWORKS_ON_CONNECTED_CHANNEL)),
-                Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL)),
-                connectionInfo.get(SSID_CONNECTED_NETWORK));
+        HashMap<Short, String> connectionInfo =  getInfoAboutCurrentConnection(wifiInfo, wifiScanList);
 
         updateChart(wifiScanList, connectionInfo);
 
         updateValuationList(wifiScanList, connectionInfo);
+
+        if(wifiInfo.getBSSID() == null)
+            return;
+
+        updateInfoBar(Integer.valueOf(connectionInfo.get(NETWORKS_ON_CONNECTED_CHANNEL)),
+                Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL)),
+                connectionInfo.get(SSID_CONNECTED_NETWORK));
     }
 
     //draw graph with networks
@@ -126,7 +132,10 @@ public class ChannelInterference extends Fragment
     {
         WifiChart wifiChart = new WifiChart(wifiScanList, sNumberOfChannels);
         wifiChart.init();
-        wifiChart.setValues(connectionInfo.get(SSID_CONNECTED_NETWORK));
+        if(connectionInfo.get(SSID_CONNECTED_NETWORK) != null)
+            wifiChart.setValues(connectionInfo.get(SSID_CONNECTED_NETWORK));
+        else
+            wifiChart.setValues("tmp");
 
         viewHolder.mChartChannels.addView(wifiChart.getmChartView(), 0);
     }
@@ -162,15 +171,6 @@ public class ChannelInterference extends Fragment
             list.add(wifiDetails);
         }
 
-        viewHolder.valuationProgressBar.setProgress(valuation_percent_recommended[
-                Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1]
-        );
-        viewHolder.valuationProgressBarView.setText(String.format(
-                getResources().getString(R.string.valuation),
-                valuation_percent_recommended[
-                        Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1] / 10
-        ));
-
         int recommendedChannels[] = getRecommendedChannels(valuation_percent_recommended);
         viewHolder.recommendedView.setText(String.format(getResources().getString(R.string.ci_recommended_bar),
                 recommendedChannels[0], recommendedChannels[1], recommendedChannels[2]
@@ -178,6 +178,19 @@ public class ChannelInterference extends Fragment
 
         mValuationChannelAdapter = new ValuationChannelAdapter( getActivity(), list);
         viewHolder.listView.setAdapter(mValuationChannelAdapter);
+
+        if (connectionInfo.get(SSID_CONNECTED_NETWORK).equals(sNN))
+            return;
+
+        viewHolder.valuationProgressBarView.setText(String.format(
+                getResources().getString(R.string.valuation),
+                valuation_percent_recommended[
+                        Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1] / 10
+        ));
+
+        viewHolder.valuationProgressBar.setProgress(valuation_percent_recommended[
+                        Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1]
+        );
     }
 
     //vevaluation of all bandwidths on the basis of available networks
@@ -221,10 +234,13 @@ public class ChannelInterference extends Fragment
         }
 
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+        String bssid = wifiInfo.getBSSID();
+        if(bssid == null)
+            bssid = "tmp";
 
         for (int i = 0; i < wifiScanList.size(); i++)
         {
-            if(!wifiScanList.get(i).BSSID.equals(wifiInfo.getBSSID()))
+            if(!wifiScanList.get(i).BSSID.equals(bssid))
             {
                 int ch = Utility.convertFrequencyToChannel(wifiScanList.get(i).frequency);
                 int dBm = wifiScanList.get(i).level;
@@ -319,13 +335,19 @@ public class ChannelInterference extends Fragment
         int onConnectedChannel = 0;
         int frequency = 0;
 
+        String bssid = wifiInfo.getBSSID();
+        if(bssid == null)
+            bssid = sNN;
+
         for(int i = 0; i < wifiScanList.size(); i++)
         {
-            if(wifiInfo.getBSSID().equals(wifiScanList.get(i).BSSID))
-            {
+            if (bssid.equals(wifiScanList.get(i).BSSID)) {
                 frequency = wifiScanList.get(i).frequency;
             }
+        }
 
+        for(int i = 0; i < wifiScanList.size(); i++)
+        {
             if (frequency == wifiScanList.get(i).frequency)
             {
                 ++onConnectedChannel;
@@ -334,7 +356,10 @@ public class ChannelInterference extends Fragment
 
         hashMap.put(FREQUENCY_CONNECTED_CHANNEL, String.valueOf(frequency));
         hashMap.put(NETWORKS_ON_CONNECTED_CHANNEL, String.valueOf(onConnectedChannel));
-        hashMap.put(SSID_CONNECTED_NETWORK, wifiInfo.getSSID());
+        if(bssid.equals(sNN))
+            hashMap.put(SSID_CONNECTED_NETWORK, bssid);
+        else
+            hashMap.put(SSID_CONNECTED_NETWORK, wifiInfo.getSSID());
 
         return hashMap;
     }
@@ -396,7 +421,7 @@ public class ChannelInterference extends Fragment
                 renderer.setColor(getColorForConnection(mSsidColorMap, mWifiScanList.get(i).SSID));
                 renderer.setDisplayBoundingPoints(true);
 
-                if(currentSSID.equals(mWifiScanList.get(i).SSID))
+                if(mWifiScanList.get(i).SSID.equals(currentSSID))
                 {
                     renderer.setLineWidth(5);
                     renderer.setPointStyle(PointStyle.DIAMOND);

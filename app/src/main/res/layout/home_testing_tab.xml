@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ht_connected_textview"
                 style="@style/HT_FontBar"
-                android:text="@string/connected_bar"
+                android:text="@string/default_connected"
                 android:singleLine="true"
                 android:padding="2dp"
                 />

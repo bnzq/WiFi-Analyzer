@@ -26,7 +26,7 @@
                 android:singleLine="true"
                 android:id="@+id/ns_connected_textview"
                 style="@style/HT_FontBar"
-                android:text="@string/connected_bar"
+                android:text="@string/default_connected"
                 android:layout_alignParentLeft="true"
                 android:padding="2dp"
                 />
@@ -37,7 +37,7 @@
                 android:singleLine="true"
                 android:id="@+id/ns_interval_textview"
                 style="@style/HT_FontBar"
-                android:text="@string/ns_interval"
+                android:text="@string/default_interval"
                 android:layout_alignParentRight="true"
                 android:padding="2dp"
                 />
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/ns_ip_textView"
-                    android:text="ip"
+                    android:text="@string/default_ip"
                     android:padding="2dp"
                     style="@style/HT_FontBar"
                     android:singleLine="true"
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/ns_speed_textView"
                     android:padding="2dp"
-                    android:text="speed"
+                    android:text="@string/default_speed"
                     style="@style/HT_FontBar"
                     android:singleLine="true"
                     />
@@ -84,7 +84,7 @@
                     android:id="@+id/ns_number_of_available_network_textView"
                     android:padding="2dp"
                     style="@style/HT_FontBar"
-                    android:text="number"
+                    android:text="@string/default_wn"
                     android:singleLine="true"
                     />
 

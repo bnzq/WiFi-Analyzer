@@ -18,7 +18,7 @@
             android:singleLine="true"
             android:id="@+id/sg_connected_textview"
             style="@style/HT_FontBar"
-            android:text="@string/connected_bar"
+            android:text="@string/default_connected"
             android:layout_alignParentLeft="true"
             android:padding="2dp"
             />

@@ -12,7 +12,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.Formatter;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +30,6 @@ import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
@@ -106,10 +100,30 @@ public class ConnectionInfo extends Fragment
     private void update()
     {
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+
+        String ssid = wifiInfo.getSSID();
+        if(wifiInfo.getBSSID() == null)
+        {
+            ssid = "EXAMPLE";
+        }
+
         double rssi = wifiInfo.getRssi();
 
         if(rssi < -100)
             rssi = -100;
+
+        WifiChart wifiChart = new WifiChart();
+        wifiChart.init();
+        wifiChart.setValues(
+                (System.nanoTime() - timeStart) / 1000000000,
+                (int) rssi,
+                ssid
+        );
+
+        viewHolder.mChartChannels.addView(wifiChart.getmChartView(), 0);
+
+        if(wifiInfo.getBSSID() == null)
+            return;
 
         viewHolder.speedometer.setSpeed(rssi + 100, 1000, 0);
         viewHolder.strengthBarView.setText(String.format(getResources().getString(R.string.cinf_strength_bar_view), wifiInfo.getRssi()));
@@ -117,16 +131,6 @@ public class ConnectionInfo extends Fragment
                 getResources().getString(R.string.percent_textView), String.valueOf(Utility.convertRssiToQuality(wifiInfo.getRssi()))));
         viewHolder.progressBar.setProgress(Utility.convertRssiToQuality(wifiInfo.getRssi()));
         viewHolder.connectedView.setText(String.format(getString(R.string.connected_bar), wifiInfo.getSSID()));
-
-        WifiChart wifiChart = new WifiChart();
-        wifiChart.init();
-        wifiChart.setValues(
-                (System.nanoTime() - timeStart) / 1000000000,
-                wifiInfo.getRssi(),
-                wifiInfo.getSSID()
-        );
-
-        viewHolder.mChartChannels.addView(wifiChart.getmChartView(), 0);
 
         List<ScanResult> wifiScanList = mWifiManager.getScanResults();
 

@@ -25,7 +25,7 @@
                 android:singleLine="true"
                 android:id="@+id/ci_connected_textview"
                 style="@style/HT_FontBar"
-                android:text="@string/connected_bar"
+                android:text="@string/default_connected"
                 android:layout_alignParentLeft="true"
                 android:padding="2dp"
                 />
@@ -55,7 +55,7 @@
                 android:singleLine="true"
                 android:id="@+id/ci_channel_textview"
                 style="@style/HT_FontBar"
-                android:text="@string/ci_channel_bar"
+                android:text="@string/default_channel"
                 android:layout_alignParentLeft="true"
                 android:padding="2dp"
                 />
@@ -66,7 +66,7 @@
                 android:singleLine="true"
                 android:id="@+id/ci_numbers_of_networks_on_this_ch_textview"
                 style="@style/HT_FontBar"
-                android:text="@string/ci_number_of_networks_on_this_channel_bar"
+                android:text="@string/default_networks_on_this_channel"
                 android:layout_alignParentRight="true"
                 android:padding="2dp"
                 />
@@ -136,7 +136,7 @@
                 android:singleLine="true"
                 android:id="@+id/ci_recommended_textview"
                 style="@style/HT_FontBar"
-                android:text="@string/ci_recommended_bar"
+                android:text="@string/default_recommended"
                 android:layout_alignParentLeft="true"
                 android:padding="2dp"
                 />
