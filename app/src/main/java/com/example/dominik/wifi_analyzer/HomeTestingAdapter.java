@@ -77,10 +77,12 @@ public class HomeTestingAdapter extends ArrayAdapter<String[]>
     public static class ViewHolder
     {
         public final TextView roomNameView;
+
         public final ProgressBar progressBarSpeedLast;
         public final ProgressBar progressBarSpeedNow;
         public final ProgressBar progressBarQualityLast;
         public final ProgressBar progressBarQualityNow;
+
         public final TextView progressBarQualityNowView;
         public final TextView progressBarQualityLastView;
         public final TextView progressBarSpeedNowView;

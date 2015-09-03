@@ -6,110 +6,113 @@
     android:background="@color/primary_dark_material_dark"
     >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/dark_bar"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:id="@+id/ns_connected_textview"
-            style="@style/HT_FontBar"
-            android:text="@string/connected_bar"
-            android:layout_alignParentLeft="true"
-            android:padding="2dp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:id="@+id/ns_interval_textview"
-            style="@style/HT_FontBar"
-            android:text="@string/ns_interval"
-            android:layout_alignParentRight="true"
-            android:padding="2dp"
-            />
-
-    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/primary_dark_material_light"
-        android:weightSum="1"
+        android:orientation="vertical"
+        android:background="@drawable/default_background"
         >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:orientation="vertical"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ns_ip_textView"
-                android:text="ip"
-                android:padding="2dp"
-                style="@style/HT_FontBar"
                 android:singleLine="true"
+                android:id="@+id/ns_connected_textview"
+                style="@style/HT_FontBar"
+                android:text="@string/connected_bar"
+                android:layout_alignParentLeft="true"
+                android:padding="2dp"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ns_speed_textView"
-                android:padding="2dp"
-                android:text="speed"
-                style="@style/HT_FontBar"
                 android:singleLine="true"
+                android:id="@+id/ns_interval_textview"
+                style="@style/HT_FontBar"
+                android:text="@string/ns_interval"
+                android:layout_alignParentRight="true"
+                android:padding="2dp"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ns_number_of_available_network_textView"
-                android:padding="2dp"
-                style="@style/HT_FontBar"
-                android:text="number"
-                android:singleLine="true"
-                />
-
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:weightSum="1"
             >
 
-            <Button
-                android:id="@+id/refresh_button"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="@string/ns_refresh_button"
-                android:padding="2dip"
-                android:layout_alignParentLeft="true"
                 android:layout_weight="0.5"
-                />
+                android:orientation="vertical"
+                >
 
-            <Button
-                android:id="@+id/scanning_time_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/ns_refresh_rate_button"
-                android:padding="2dip"
-                android:layout_alignParentRight="true"
-                android:layout_weight="0.5"
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ns_ip_textView"
+                    android:text="ip"
+                    android:padding="2dp"
+                    style="@style/HT_FontBar"
+                    android:singleLine="true"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ns_speed_textView"
+                    android:padding="2dp"
+                    android:text="speed"
+                    style="@style/HT_FontBar"
+                    android:singleLine="true"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ns_number_of_available_network_textView"
+                    android:padding="2dp"
+                    style="@style/HT_FontBar"
+                    android:text="number"
+                    android:singleLine="true"
+                    />
+
+            </LinearLayout>
+
+            <ImageButton
+                    android:id="@+id/refresh_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="2dp"
+                    android:layout_weight="0.25"
+                    android:src="@mipmap/refresh"
+                    android:background="@drawable/default_button_selector"
+                    android:layout_gravity="center"
+                    android:gravity = "center"
+                    />
+
+            <ImageButton
+                    android:id="@+id/scanning_time_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="2dp"
+                    android:layout_weight="0.25"
+                    android:src="@mipmap/refresh_time"
+                    android:background="@drawable/default_button_selector"
+                    android:layout_gravity="center"
+                    android:gravity = "center"
+                    />
 
         </LinearLayout>
 

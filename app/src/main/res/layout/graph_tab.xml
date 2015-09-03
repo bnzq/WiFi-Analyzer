@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/dark_bar"
+        android:background="@drawable/default_background"
         >
 
         <TextView
@@ -42,6 +42,5 @@
         android:id="@+id/sg_channel_chart"
         android:orientation="vertical"
         />
-
 
 </LinearLayout>

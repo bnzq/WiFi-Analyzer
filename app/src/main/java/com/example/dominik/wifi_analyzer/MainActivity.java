@@ -3,6 +3,7 @@ package com.example.dominik.wifi_analyzer;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TabHost;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -61,6 +63,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
         });
 
+        Drawable drawable[] = new Drawable[mSectionsPagerAdapter.getCount()];
+        drawable[0] = getResources().getDrawable(R.drawable.icon_tab_cinf);
+        drawable[1] = getResources().getDrawable(R.drawable.icon_tab_ns);
+        drawable[2] = getResources().getDrawable(R.drawable.icon_tab_ht);
+        drawable[3] = getResources().getDrawable(R.drawable.icon_tab_ci);
+        drawable[4] = getResources().getDrawable(R.drawable.icon_tab_sg);
+
         // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             // Create a tab with text corresponding to the page title defined by
@@ -69,8 +78,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             // this tab is selected.
             actionBar.addTab(
                     actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
+                            .setTabListener(this).setIcon(drawable[i]));
         }
 
     }
@@ -104,6 +112,23 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions( ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+
+        switch (tab.getPosition())
+        {
+            case 0:
+                actionBar.setSubtitle(getString(R.string.title_section_name1)); break;
+            case 1:
+                actionBar.setSubtitle(getString(R.string.title_section_name2)); break;
+            case 2:
+                actionBar.setSubtitle(getString(R.string.title_section_name3)); break;
+            case 3:
+                actionBar.setSubtitle(getString(R.string.title_section_name4)); break;
+            case 4:
+                actionBar.setSubtitle(getString(R.string.title_section_name5)); break;
+        }
+
         mViewPager.setCurrentItem(tab.getPosition());
     }
 

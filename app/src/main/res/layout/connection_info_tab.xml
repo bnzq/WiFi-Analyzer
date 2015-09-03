@@ -1,17 +1,456 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#0ff4ff" >
+    android:background="@color/primary_dark_material_dark"
+    >
 
-    <TextView android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="5 tab i git"
-        android:textSize="30dp"
-        android:layout_centerInParent="true"/>
+        android:orientation="vertical"
+        android:background="@drawable/default_background"
+        >
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
 
-</RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:id="@+id/cinf_connected_textview"
+                style="@style/HT_FontBar"
+                android:text="Connected: N/N"
+                android:layout_alignParentLeft="true"
+                android:padding="2dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:id="@+id/cinf_filter_textview"
+                style="@style/HT_FontBar"
+                android:text="@string/ci_filter_bar"
+                android:layout_alignParentRight="true"
+                android:padding="2dp"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:id="@+id/cinf_strength_bar_view"
+                android:text="dBm: N/N"
+                android:padding="5dp"
+                style ="@style/CINF_Font_dBm"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <ProgressBar
+                    android:id="@+id/cinf_quality_progressbar_now"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    android:progressDrawable="@drawable/green_progress_bar"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style ="@style/Standard_Font"
+                    android:text=""
+                    android:id="@+id/cinf_strength_percent_progressbar_now_textView"
+                    android:background="#00000000"
+                    android:layout_centerInParent="true"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/cinf_channel_chart"
+        android:orientation="vertical"
+        />
+
+    <com.cardiomood.android.controls.gauge.SpeedometerGauge
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="8dp"
+        android:id="@+id/speedometer"
+        android:gravity = "center"
+        android:layout_gravity = "center"
+        />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_yellow"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_ssid_static_view"
+                        android:text="@string/cinf_ssid_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_bssid_static_view"
+                        android:text="@string/cinf_bssid_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_mac_static_view"
+                        android:text="@string/cinf_mac_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_speed_static_view"
+                        android:text="@string/cinf_speed_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_strength_static_view"
+                        android:text="@string/cinf_strength_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_encryption_static_view"
+                        android:text="@string/cinf_encryption_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_channel_static_view"
+                        android:text="@string/cinf_channel_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_frequency_static_view"
+                        android:text="@string/cinf_frequency_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_ip_static_view"
+                        android:text="@string/cinf_ip_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_netmask_static_view"
+                        android:text="@string/cinf_netmask_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_gateway_static_view"
+                        android:text="@string/cinf_gateway_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_dhcp_static_view"
+                        android:text="@string/cinf_dhcp_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_dns1_static_view"
+                        android:text="@string/cinf_dns1_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_dns2_static_view"
+                        android:text="@string/cinf_dns2_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_dhspl_static_view"
+                        android:text="@string/cinf_dhspl_view"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_ssid_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_bssid_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_mac_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_speed_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_strength_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_encryption_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_channel_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_frequency_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_ip_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_netmask_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_gateway_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_dhcp_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_dns1_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_dns2_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:id="@+id/cinf_dhspl_view"
+                        android:text="dBm: N/N"
+                        android:padding="4dp"
+                        style ="@style/CINF_Font_Info"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
 

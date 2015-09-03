@@ -9,75 +9,96 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/dark_bar"
+        android:orientation="vertical"
+        android:background="@drawable/default_background"
         >
 
-        <TextView
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ht_connected_textview"
+                style="@style/HT_FontBar"
+                android:text="@string/connected_bar"
+                android:singleLine="true"
+                android:padding="2dp"
+                />
+
+            <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ht_connected_textview"
-            style="@style/HT_FontBar"
-            android:text="@string/connected_bar"
             android:singleLine="true"
+            android:id="@+id/ht_filter_textview"
+            style="@style/HT_FontBar"
+            android:text="@string/ci_filter_bar"
+            android:layout_alignParentRight="true"
             android:padding="2dp"
             />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:paddingBottom="4dp"
+            >
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_room_button"
+                android:src="@mipmap/add"
+                />
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/edit"
+                android:id="@+id/edit_room_button"
+                />
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/delete"
+                android:id="@+id/del_room_button"
+                />
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/restore"
+                android:id="@+id/def_room_button"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/ht_test_button"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/home_testing_test_button"
+                android:background="@drawable/default_button_test_selector"
+                android:textColor="@color/dark_white"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:background="@color/primary_dark_material_light"
-        >
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ht_add_button"
-            android:id="@+id/add_room_button"
-            />
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ht_edit_button"
-            android:id="@+id/edit_room_button"
-            />
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ht_del_button"
-            android:id="@+id/del_room_button"
-            />
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ht_def_button"
-            android:id="@+id/def_room_button"
-            />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/ht_test_button"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:id="@+id/home_testing_test_button"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="19dp"
         android:orientation="horizontal"
         android:background="@color/primary_dark_material_dark"
         android:weightSum="1"
@@ -91,8 +112,8 @@
             android:id="@+id/ht_strength_static_textView"
             android:layout_weight="0.5"
             android:gravity="center"
+            android:singleLine="true"
             />
-
 
         <TextView
             android:layout_height="wrap_content"
@@ -102,9 +123,8 @@
             android:id="@+id/ht_last_static_textView"
             android:gravity="center"
             android:layout_weight="0.5"
+            android:singleLine="true"
             />
-
-
 
     </LinearLayout>
 

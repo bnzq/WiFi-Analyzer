@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -124,6 +125,11 @@ public class NetworkStatus extends Fragment
 
         List<ScanResult> wifiScanList = mWifiManager.getScanResults();
 
+        if(wifiScanList == null)
+        {
+            return;
+        }
+
         updateNetworkStatus(wifiScanList);
         updateInfoBar(wifiScanList.size());
     }
@@ -132,11 +138,6 @@ public class NetworkStatus extends Fragment
     private void updateNetworkStatus(List<ScanResult> wifiScanList)
     {
         List<String[]> list = new ArrayList<String[]>();
-
-        if(wifiScanList == null)
-        {
-            return;
-        }
 
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
 
@@ -222,21 +223,21 @@ public class NetworkStatus extends Fragment
 
     public class ViewHolder
     {
-        Button refreshButton;
-        Button refreshRateButton;
+        public final ImageButton refreshButton;
+        public final ImageButton refreshRateButton;
 
-        TextView connectedInfoView;
-        TextView intervalView;
-        TextView ipView;
-        TextView speedView;
-        TextView wirelessNetworksView;
+        public final TextView connectedInfoView;
+        public final TextView intervalView;
+        public final TextView ipView;
+        public final TextView speedView;
+        public final TextView wirelessNetworksView;
 
-        ListView mListView;
+        public final ListView mListView;
 
         public ViewHolder(View rootView)
         {
-            refreshButton = (Button) rootView.findViewById(R.id.refresh_button);
-            refreshRateButton = (Button) rootView.findViewById(R.id.scanning_time_button);
+            refreshButton = (ImageButton) rootView.findViewById(R.id.refresh_button);
+            refreshRateButton = (ImageButton) rootView.findViewById(R.id.scanning_time_button);
 
             connectedInfoView = (TextView) rootView.findViewById(R.id.ns_connected_textview);
             intervalView = (TextView) rootView.findViewById(R.id.ns_interval_textview);

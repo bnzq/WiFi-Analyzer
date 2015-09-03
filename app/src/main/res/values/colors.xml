@@ -45,7 +45,10 @@
     <color name="switch_thumb_normal_material_dark">#ffbdbdbd</color>
     <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
 
+    <color name="black">#000000</color>
+    <color name="holo_blue_dark">#ff0099cc</color>
     <color name="blue">#0000ff</color>
+    <color name="dark_blue">#0000ca</color>
     <color name="material_deep_teal_500">#ff009688</color>
     <color name="background_material_dark">#ff303030</color>
     <color name="primary_dark_material_light">#ff757575</color>
@@ -54,4 +57,5 @@
     <color name="dark_yellow">#FFFF00</color>
     <color name="dark_white">#DDDDDD</color>
     <color name="white">#FFFFFF</color>
+
 </resources>

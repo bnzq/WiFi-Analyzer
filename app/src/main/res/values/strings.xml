@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WiFi-Analyzer</string>
+    <string name="app_name">WiFi-ANALYZER</string>
 
     <string name="title_section1">1</string>
     <string name="title_section2">2</string>
@@ -7,10 +7,13 @@
     <string name="title_section4">4</string>
     <string name="title_section5">5</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="title_section_name1">Connection Info</string>
+    <string name="title_section_name2">Networks Status</string>
+    <string name="title_section_name3">Home Testing</string>
+    <string name="title_section_name4">Channel Interference</string>
+    <string name="title_section_name5">Strenght Graph</string>
 
-    <string name="ns_refresh_button">R</string>
-    <string name="ns_refresh_rate_button">ST</string>
+    <string name="action_settings">Settings</string>
 
     <string name="pref_refresh_rate_label">Refresh Rate</string>
     <string name="pref_refresh_rate_key" translatable="false">refreshRate</string>
@@ -31,6 +34,7 @@
 
     <string name="percent_textView">%1$s %%</string>
     <string name="Mbps_textView">%1$s Mbps</string>
+    <string name="dBm_textView">%1$s dBm</string>
     <string name="connected_bar">Connected: %1$s</string>
     <string name="valuation">%1$d / 10 </string>
 
@@ -47,10 +51,6 @@
     <string name="ns_speed">Speed: %1$s Mbps</string>
     <string name="ns_number_of_available_network">Wireless networks: %1$s</string>
 
-    <string name="ht_add_button">Add</string>
-    <string name="ht_edit_button">Edit</string>
-    <string name="ht_del_button">Del</string>
-    <string name="ht_def_button">Def</string>
     <string name="ht_test_button">TEST</string>
 
     <string name="ht_strength_static_textView">STRENGTH</string>
@@ -86,5 +86,24 @@
     <string name="sg_labelx">Time (s)</string>
     <string name="sg_labely">Strength (dBm)</string>
 
+    <string name="cinf_strength_bar_view">dBm: %1$s</string>
+
+    <string name="cinf_ssid_view">SSID:</string>
+    <string name="cinf_bssid_view">BSSID:</string>
+    <string name="cinf_mac_view">MAC:</string>
+    <string name="cinf_manufacturer_view">Manufacturer:</string>
+    <string name="cinf_speed_view">Speed:</string>
+    <string name="cinf_strength_view">Strength:</string>
+    <string name="cinf_encryption_view">Encryption:</string>
+    <string name="cinf_channel_view">Channel:</string>
+    <string name="cinf_frequency_view">Frequency:</string>
+    <string name="cinf_ip_view">IP:</string>
+    <string name="cinf_netmask_view">Netmask:</string>
+    <string name="cinf_gateway_view">Gateway:</string>
+    <string name="cinf_dhcp_view">DHCP-Server:</string>
+    <string name="cinf_dns1_view">DNS1:</string>
+    <string name="cinf_dns2_view">DNS2:</string>
+    <string name="cinf_dhspl_view">DHCP lease:</string>
+    <string name="cinf_exterip_view">External IP:</string>
 
 </resources>

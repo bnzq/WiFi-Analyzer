@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -565,10 +566,10 @@ public class HomeTesting extends Fragment
 
     public class ViewHolder
     {
-        public final Button addButton;
-        public final Button delButton;
-        public final Button editButton;
-        public final Button defButton;
+        public final ImageButton addButton;
+        public final ImageButton delButton;
+        public final ImageButton editButton;
+        public final ImageButton defButton;
         public final Button testButton;
 
         public final TextView connectedView;
@@ -577,10 +578,10 @@ public class HomeTesting extends Fragment
 
         public ViewHolder(View rootView)
         {
-            addButton = (Button) rootView.findViewById(R.id.add_room_button);
-            delButton = (Button) rootView.findViewById(R.id.del_room_button);
-            editButton = (Button) rootView.findViewById(R.id.edit_room_button);
-            defButton = (Button) rootView.findViewById(R.id.def_room_button);
+            addButton = (ImageButton) rootView.findViewById(R.id.add_room_button);
+            delButton = (ImageButton) rootView.findViewById(R.id.del_room_button);
+            editButton = (ImageButton) rootView.findViewById(R.id.edit_room_button);
+            defButton = (ImageButton) rootView.findViewById(R.id.def_room_button);
             testButton = (Button) rootView.findViewById(R.id.home_testing_test_button);
 
             connectedView = (TextView) rootView.findViewById(R.id.ht_connected_textview);

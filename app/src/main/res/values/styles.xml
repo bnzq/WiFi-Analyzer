@@ -1,24 +1,42 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle</item>
         <item name="actionBarTabStyle">@style/ActionBarTabStyle</item>
-        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleText</item>
-        <item name="titleTextStyle">@style/AppTheme.ActionBar.TitleText</item>
-        <item name="android:height">@dimen/bar_height</item>
-        <item name="height">@dimen/bar_height</item>
-        <item name="android:actionBarSize">@dimen/action_bar_size</item>
-        <item name="actionBarSize">@dimen/action_bar_size</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorAccent">@color/black</item>
     </style>
 
-    <style name="ActionBarTabStyle" parent="Widget.AppCompat.ActionBar.TabView">
+    <style name="Widget.Styled.ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:displayOptions">useLogo|showTitle</item>
+        <item name="displayOptions">useLogo|showTitle</item>
+        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleText</item>
+        <item name="titleTextStyle">@style/AppTheme.ActionBar.TitleText</item>
+        <item name="android:subtitleTextStyle">@style/AppTheme.ActionBar.SubTitleText</item>
+        <item name="subtitleTextStyle">@style/AppTheme.ActionBar.SubTitleText</item>
+        <item name="android:height">@dimen/bar_height</item>
+        <item name="height">@dimen/bar_height</item>
+        <item name="android:icon">@mipmap/wireless_main</item>
+        <item name="icon">@mipmap/wireless_main</item>
+        <item name="android:background">@drawable/default_actionbar</item>
+        <item name="background">@drawable/default_actionbar</item>
+    </style>
+
+    <style name="ActionBarTabStyle" parent="Widget.AppCompat.Light.ActionBar.TabView">
         <item name="android:paddingLeft">2dip</item>
         <item name="android:paddingRight">2dip</item>
         <item name="android:minWidth">40dip</item>
     </style>
 
     <style name="AppTheme.ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">@dimen/bar_text_size</item>
+        <item name="android:textSize">@dimen/bar_title_text_size</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.SubTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">@dimen/bar_subtitle_text_size</item>
     </style>
 
     <style name="NetworksListStyle">
@@ -65,6 +83,22 @@
     <style name="HT_FontBar" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">10dp</item>
+    </style>
+
+    <style name="CINF_Font_dBm" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/dark_white</item>
+        <item name="android:textSize">13dp</item>
+    </style>
+
+    <style name="CINF_Font_Info" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">11dp</item>
+    </style>
+
+    <style name="DefaultButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/default_button_selector</item>
     </style>
 
 </resources>
