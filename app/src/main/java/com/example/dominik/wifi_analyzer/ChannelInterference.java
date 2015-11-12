@@ -34,6 +34,7 @@ import java.util.List;
 
 public class ChannelInterference extends Fragment
 {
+    @SuppressWarnings("unused")
     public static final String LOG_TAG = ChannelInterference.class.getSimpleName();
 
     final static short FREQUENCY_CONNECTED_CHANNEL = 0;
@@ -41,6 +42,8 @@ public class ChannelInterference extends Fragment
     final static short SSID_CONNECTED_NETWORK = 2;
 
     final private static short sNumberOfChannels = 13;
+    final private static short sFirstChannel = 1;
+    final private static short sLastChannel = sNumberOfChannels;
 
     final private static short sAllChannels = sNumberOfChannels + 4;
     final private static short s1stFactor = 80;
@@ -55,8 +58,7 @@ public class ChannelInterference extends Fragment
     private ViewHolder viewHolder;
     private WifiScanReceiver mWifiReceiver;
     private WifiManager mWifiManager;
-    private ValuationChannelAdapter mValuationChannelAdapter;
-    private HashMap<String, Integer> mSsidColorMap = new HashMap<String, Integer>();
+    private HashMap<String, Integer> mSsidColorMap = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -153,7 +155,7 @@ public class ChannelInterference extends Fragment
     //draw and find best channels
     private void updateValuationList(List<ScanResult> wifiScanList, HashMap<Short, String> connectionInfo)
     {
-        List<String[]> list = new ArrayList<String[]>();
+        List<String[]> list = new ArrayList<>();
 
         int[] networksOnChannel = getNumberOfNetworksOnChannels(wifiScanList);
         int[] valuation_percent = valuateChannels(wifiScanList);
@@ -176,7 +178,7 @@ public class ChannelInterference extends Fragment
                 recommendedChannels[0], recommendedChannels[1], recommendedChannels[2]
         ));
 
-        mValuationChannelAdapter = new ValuationChannelAdapter( getActivity(), list);
+        ValuationChannelAdapter mValuationChannelAdapter = new ValuationChannelAdapter(getActivity(), list);
         viewHolder.listView.setAdapter(mValuationChannelAdapter);
 
         if (connectionInfo.get(SSID_CONNECTED_NETWORK).equals(sNN))
@@ -205,19 +207,26 @@ public class ChannelInterference extends Fragment
 
         for (int i = 0; i < wifiScanList.size(); i++)
         {
-            int ch = Utility.convertFrequencyToChannel(wifiScanList.get(i).frequency);
+            int channel = Utility.convertFrequencyToChannel(wifiScanList.get(i).frequency);
+
+            if( channel  < sFirstChannel || channel > sLastChannel)
+                continue;
+
             int dBm = wifiScanList.get(i).level;
 
-            result[ch + 1] -= (s1stFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, 0));
-            result[ch] -= (s2ndFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm2ndFactor));
-            result[ch - 1] -= (s3rdFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm3rdFactor));
-            result[ch + 2] -= (s2ndFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm2ndFactor));
-            result[ch + 3] -= (s3rdFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm3rdFactor));
+            result[channel + 1] -= (s1stFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, 0));
+            result[channel] -= (s2ndFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm2ndFactor));
+            result[channel - 1] -= (s3rdFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm3rdFactor));
+            result[channel + 2] -= (s2ndFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm2ndFactor));
+            result[channel + 3] -= (s3rdFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm3rdFactor));
         }
 
         for (int i = 0; i < sAllChannels; i++)
         {
             result[i] /= 5;
+
+            if(result[i] < 0)
+                result[i] = 0;
         }
 
         return result;
@@ -242,20 +251,26 @@ public class ChannelInterference extends Fragment
         {
             if(!wifiScanList.get(i).BSSID.equals(bssid))
             {
-                int ch = Utility.convertFrequencyToChannel(wifiScanList.get(i).frequency);
+                int channel = Utility.convertFrequencyToChannel(wifiScanList.get(i).frequency);
                 int dBm = wifiScanList.get(i).level;
 
-                result[ch + 1] -= (s1stFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, 0));
-                result[ch] -= (s2ndFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm2ndFactor));
-                result[ch - 1] -= (s3rdFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm3rdFactor));
-                result[ch + 2] -= (s2ndFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm2ndFactor));
-                result[ch + 3] -= (s3rdFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm3rdFactor));
+                if( channel  < sFirstChannel || channel > sLastChannel)
+                    continue;
+
+                result[channel + 1] -= (s1stFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, 0));
+                result[channel] -= (s2ndFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm2ndFactor));
+                result[channel - 1] -= (s3rdFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm3rdFactor));
+                result[channel + 2] -= (s2ndFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm2ndFactor));
+                result[channel + 3] -= (s3rdFactor + sDBmFactor * Utility.convertRssiToQualityWithSub(dBm, sDBm3rdFactor));
             }
         }
 
         for (int i = 0; i < sAllChannels; i++)
         {
             result[i] /= 5;
+
+            if(result[i] < 0)
+                result[i] = 0;
         }
 
         int averages[] = new int[sNumberOfChannels];
@@ -281,7 +296,13 @@ public class ChannelInterference extends Fragment
 
         for (int i = 0; i < wifiScanList.size(); i++)
         {
-            result[Utility.convertFrequencyToChannel(wifiScanList.get(i).frequency) - 1] += 1;
+            int res = Utility.convertFrequencyToChannel(wifiScanList.get(i).frequency) - 1;
+
+
+            if( res  < sFirstChannel - 1 || res > sLastChannel - 1)
+                continue;
+
+            result[ res ] += 1;
         }
 
         return result;
@@ -415,6 +436,8 @@ public class ChannelInterference extends Fragment
 
         public void setValues( String currentSSID)
         {
+            int index = 0;
+
             for(int i = 0; i < mWifiScanList.size(); i++)
             {
                 XYSeriesRenderer renderer = new XYSeriesRenderer();
@@ -439,12 +462,18 @@ public class ChannelInterference extends Fragment
                 XYSeries series = new XYSeries(mWifiScanList.get(i).SSID );
 
                 int channel = Utility.convertFrequencyToChannel(mWifiScanList.get(i).frequency);
+
+                if( channel  < sFirstChannel || channel > sLastChannel)
+                    continue;
+
                 series.add(channel - 2, -100);
                 series.add(channel, mWifiScanList.get(i).level);
                 series.add(channel + 2, -100);
 
-                mDataset.addSeries(i, series);
-                mRenderer.addSeriesRenderer(i, renderer);
+                mDataset.addSeries(index, series);
+                mRenderer.addSeriesRenderer(index, renderer);
+                index++;
+
             }
         }
 
@@ -486,10 +515,15 @@ public class ChannelInterference extends Fragment
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            LayoutInflater inflater = (LayoutInflater) context.
-                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = null;
 
-            View view = inflater.inflate(R.layout.channel_interference_listview, parent, false);
+            if(convertView == null)
+            {
+                LayoutInflater inflater = (LayoutInflater) context.
+                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                view = inflater.inflate(R.layout.channel_interference_listview, parent, false);
+            }
 
             ViewHolder viewHolder = new ViewHolder(view);
 

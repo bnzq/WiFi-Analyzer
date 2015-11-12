@@ -1,24 +1,24 @@
 package com.example.dominik.wifi_analyzer;
 
-import java.util.Locale;
-
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
 
+import java.util.Locale;
+
+@SuppressWarnings("deprecation")
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     /**
@@ -43,7 +43,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        if (actionBar != null)
+        {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -59,7 +63,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
+                if (actionBar != null) {
+                    actionBar.setSelectedNavigationItem(position);
+                }
             }
         });
 
@@ -76,9 +82,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             // the adapter. Also specify this Activity object, which implements
             // the TabListener interface, as the callback (listener) for when
             // this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setTabListener(this).setIcon(drawable[i]));
+            if (actionBar != null) {
+                actionBar.addTab(
+                        actionBar.newTab()
+                                .setTabListener(this).setIcon(drawable[i]));
+            }
         }
 
     }
@@ -113,7 +121,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayOptions( ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        if (actionBar != null)
+        {
+            actionBar.setDisplayOptions( ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        }
+
+        assert actionBar != null;
 
         switch (tab.getPosition())
         {
@@ -203,6 +216,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     /**  -------------------------------------------------------------------------------------------
      * A placeholder fragment containing a simple view.
      ----------------------------------------------------------------------------------------------*/
+    @SuppressWarnings("unused")
     public static class PlaceholderFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
@@ -214,6 +228,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
          * Returns a new instance of this fragment for the given section
          * number.
          */
+
+        @SuppressWarnings("unused")
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -228,8 +244,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_main, container, false);
         }
     }
 

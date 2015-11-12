@@ -34,15 +34,21 @@ public class NetworkStatusAdapter extends ArrayAdapter<String[]>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        LayoutInflater inflater = (LayoutInflater) getContext().
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = null;
+        //TODO check that !
+//
+//        if(convertView != null)
+//        {
+            LayoutInflater inflater = (LayoutInflater) getContext().
+                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.network_status_listview, parent, false);
+            view = inflater.inflate(R.layout.network_status_listview, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(view);
+            ViewHolder viewHolder = new ViewHolder(view);
 
-        setValuesToListView(position, viewHolder);
-
+            setValuesToListView(position, viewHolder);
+//        }
+//
         return view;
     }
 

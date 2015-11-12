@@ -13,7 +13,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.Formatter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,16 +27,15 @@ import java.util.TimerTask;
 
 public class NetworkStatus extends Fragment
 {
+    @SuppressWarnings("unused")
     public static final String LOG_TAG = NetworkStatus.class.getSimpleName();
 
     private WifiScanReceiver mWifiReceiver;
     private WifiManager mWifiManager;
-    private NetworkStatusAdapter mNetworkStatusAdapter;
 
     private int mRefreshRateInSec = 2;
     private int mRrefreshRate = 1000 * mRefreshRateInSec;
     private Timer timer;
-    private TimerTask updateTask;
     private ViewHolder viewHolder;
 
     @Override
@@ -100,7 +98,7 @@ public class NetworkStatus extends Fragment
         if(mRrefreshRate > 0)
         {
             timer = new Timer();
-            updateTask = new TimerTask() {
+            TimerTask updateTask = new TimerTask() {
                 @Override
                 public void run() {
                     getActivity().runOnUiThread(new Runnable()
@@ -137,7 +135,7 @@ public class NetworkStatus extends Fragment
     //update network status for each signal
     private void updateNetworkStatus(List<ScanResult> wifiScanList)
     {
-        List<String[]> list = new ArrayList<String[]>();
+        List<String[]> list = new ArrayList<>();
 
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
 
@@ -167,11 +165,12 @@ public class NetworkStatus extends Fragment
             list.add(wifiDetails);
         }
 
-        mNetworkStatusAdapter = new NetworkStatusAdapter( getActivity(), list);
+        NetworkStatusAdapter mNetworkStatusAdapter = new NetworkStatusAdapter(getActivity(), list);
         viewHolder.mListView.setAdapter(mNetworkStatusAdapter);
     }
 
     //update view in simple info bar
+    @SuppressWarnings("deprecation")
     private void updateInfoBar(int size)
     {
         Resources resources = getResources();
@@ -206,9 +205,9 @@ public class NetworkStatus extends Fragment
                         mRefreshRateInSec = Integer.parseInt(stringsRefreshRateValues[which]);
                         mRrefreshRate = 1000 * mRefreshRateInSec;
 
-                        setParametersReceiverBefore();
-                        setParametersReceiverAfter();
-                        updateView();
+                        NetworkStatus.this.setParametersReceiverBefore();
+                        NetworkStatus.this.setParametersReceiverAfter();
+                        NetworkStatus.this.updateView();
 
                         dialog.dismiss();
                     }

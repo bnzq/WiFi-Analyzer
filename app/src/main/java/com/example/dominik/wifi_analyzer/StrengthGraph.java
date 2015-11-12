@@ -10,7 +10,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +29,13 @@ import java.util.List;
 
 public class StrengthGraph extends Fragment
 {
+    @SuppressWarnings("unused")
     public static final String LOG_TAG = StrengthGraph.class.getSimpleName();
 
     private WifiScanReceiver mWifiReceiver;
     private WifiManager mWifiManager;
-    private HashMap<String, Integer> mSsidColorMap = new HashMap<String, Integer>();
-    private HashMap<String, XYSeries> series = new HashMap<String, XYSeries>();
+    private HashMap<String, Integer> mSsidColorMap = new HashMap<>();
+    private HashMap<String, XYSeries> series = new HashMap<>();
 
     LinearLayout mChartChannels;
 

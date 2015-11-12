@@ -25,4 +25,6 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.0'
     compile files('libs/achartengine-1.1.0.jar')
     compile 'com.cardiomood.android:android-widgets:0.1.1'
+    testCompile 'junit:junit:4.12'
+
 }

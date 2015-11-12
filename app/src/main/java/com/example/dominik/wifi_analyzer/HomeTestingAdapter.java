@@ -32,14 +32,19 @@ public class HomeTestingAdapter extends ArrayAdapter<String[]>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        LayoutInflater inflater = (LayoutInflater) getContext().
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = null;
 
-        View view = inflater.inflate(R.layout.home_testing_listview, parent, false);
+        if(convertView == null)
+        {
+            LayoutInflater inflater = (LayoutInflater) getContext().
+                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        ViewHolder viewHolder = new ViewHolder(view);
+            view = inflater.inflate(R.layout.home_testing_listview, parent, false);
 
-        setValuesToListView(position, viewHolder);
+            ViewHolder viewHolder = new ViewHolder(view);
+
+            setValuesToListView(position, viewHolder);
+        }
 
         return view;
     }

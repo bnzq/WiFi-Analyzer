@@ -12,7 +12,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.Formatter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,13 +34,14 @@ import java.util.List;
 
 public class ConnectionInfo extends Fragment
 {
+    @SuppressWarnings("unused")
     public static final String LOG_TAG = ConnectionInfo.class.getSimpleName();
 
     private static final String SERIES_KEY = "KEY";
 
     private WifiScanReceiver mWifiReceiver;
     private WifiManager mWifiManager;
-    private HashMap<String, XYSeries> series = new HashMap<String, XYSeries>();
+    private HashMap<String, XYSeries> series = new HashMap<>();
 
     ViewHolder viewHolder;
 
@@ -97,6 +97,7 @@ public class ConnectionInfo extends Fragment
     }
 
     //update info bar, speedometer, connection info
+    @SuppressWarnings("deprecation")
     private void update()
     {
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
@@ -278,7 +279,7 @@ public class ConnectionInfo extends Fragment
         public void onReceive(Context c, Intent intent)
         {
             update();
-        };
+        }
     }
 
     public class ViewHolder

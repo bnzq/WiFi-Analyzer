@@ -28,13 +28,13 @@ import java.util.List;
 
 public class HomeTesting extends Fragment
 {
+    @SuppressWarnings("unused")
     public static final String LOG_TAG = HomeTesting.class.getSimpleName();
 
     private static final int TEXT_ID = 0;
 
     private WifiManager mWifiManager;
     private MyDBHandler mMyDBHandler;
-    private HomeTestingAdapter mHomeTestingAdapter;
     private int mPositionSelected = -1;
     private String mNameSelected = "";
     private ViewHolder viewHolder;
@@ -77,7 +77,7 @@ public class HomeTesting extends Fragment
     //update rooms from datebase to view
     private void updateTestingRooms()
     {
-        List<String[]> list = new ArrayList<String[]>();
+        List<String[]> list = new ArrayList<>();
 
         List<RoomInfo> roomInfoList = mMyDBHandler.getAllRoomsInfos();
 
@@ -88,13 +88,13 @@ public class HomeTesting extends Fragment
             wifiDetails[HomeTestingAdapter.ROOM_NAME_TAB] = roomInfoList.get(i).getRoomName();
             wifiDetails[HomeTestingAdapter.LINK_SPEED_TAB] = Float.toString(roomInfoList.get(i).getLinkSpeed());
             wifiDetails[HomeTestingAdapter.RSSI_TAB] = Float.toString(roomInfoList.get(i).getRssi());
-            wifiDetails[HomeTestingAdapter.LAST_LINK_SPEED_TAB] = Float.toString(roomInfoList.get(i).getLastLinkSpeed());;
+            wifiDetails[HomeTestingAdapter.LAST_LINK_SPEED_TAB] = Float.toString(roomInfoList.get(i).getLastLinkSpeed());
             wifiDetails[HomeTestingAdapter.LAST_RSSI_TAB] = Float.toString(roomInfoList.get(i).getLastRssi());
 
             list.add(wifiDetails);
         }
 
-        mHomeTestingAdapter = new HomeTestingAdapter(getActivity(), list);
+        HomeTestingAdapter mHomeTestingAdapter = new HomeTestingAdapter(getActivity(), list);
         viewHolder.mListView.setAdapter(mHomeTestingAdapter);
     }
 
@@ -150,9 +150,8 @@ public class HomeTesting extends Fragment
             {
                 String value = input.getText().toString();
                 mMyDBHandler.addRoomInfo(new RoomInfo(0, 0, value));
-                updateView();
+                HomeTesting.this.updateView();
 
-                return;
             }
         });
 
@@ -161,7 +160,6 @@ public class HomeTesting extends Fragment
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                return;
             }
         });
 
@@ -184,25 +182,23 @@ public class HomeTesting extends Fragment
         builder.setView(input);
 
         builder.setPositiveButton(getString(R.string.ok_text), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton)
             {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton)
-                {
-                    String value = input.getText().toString();
-                    mMyDBHandler.editOnlyRoomNameInRoomInfo(mNameSelected, value);
-                    updateView();
-                    restoreSelected();
+                String value = input.getText().toString();
+                mMyDBHandler.editOnlyRoomNameInRoomInfo(mNameSelected, value);
+                HomeTesting.this.updateView();
+                HomeTesting.this.restoreSelected();
 
-                    return;
-                }
-            });
+            }
+        });
 
         builder.setNegativeButton(getString(R.string.cancel_text), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                return;
             }
         });
 
@@ -285,7 +281,7 @@ public class HomeTesting extends Fragment
 
             SQLiteDatabase db = this.getWritableDatabase();
 
-            ArrayList<RoomInfo> result = new ArrayList<RoomInfo>();
+            ArrayList<RoomInfo> result = new ArrayList<>();
 
             Cursor cursor = db.query(
                     MyDBHandler.TABLE_ROOMS,
@@ -497,6 +493,7 @@ public class HomeTesting extends Fragment
             this.lastRssi = 0.0f;
         }
 
+        @SuppressWarnings("unused")
         public RoomInfo(float rssi, float linkSpeed, String roomName,float lastRssi, float lastLinkSpeed)
         {
             this.rssi = rssi;
@@ -636,8 +633,7 @@ public class HomeTesting extends Fragment
                 @Override
                 public void onClick(View v)
                 {
-                    if(mPositionSelected != -1)
-                    {
+                    if (mPositionSelected != -1) {
                         Dialog dialog = createEditRoomDialog();
                         dialog.show();
                     }
@@ -649,8 +645,7 @@ public class HomeTesting extends Fragment
                 @Override
                 public void onClick(View v)
                 {
-                    if(mPositionSelected != -1)
-                    {
+                    if (mPositionSelected != -1) {
                         mMyDBHandler.deleteRoomInfo(mNameSelected);
                         updateView();
                         restoreSelected();

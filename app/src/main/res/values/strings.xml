@@ -11,7 +11,7 @@
     <string name="title_section_name2">Networks Status</string>
     <string name="title_section_name3">Home Testing</string>
     <string name="title_section_name4">Channel Interference</string>
-    <string name="title_section_name5">Strenght Graph</string>
+    <string name="title_section_name5">Strength Graph</string>
 
     <string name="action_settings">Settings</string>
 
@@ -63,7 +63,7 @@
     <string name="ht_add_room_dialog_message">Room name: </string>
     <string name="ht_edit_room_dialog_title">Edit room</string>
     <string name="ht_edit_room_dialog_message">New room name: </string>
-    <string name="ok_text">Ok</string>
+    <string name="ok_text">OK</string>
     <string name="cancel_text">Cancel</string>
 
     <string name="ci_filter_bar">Filter: 2,4 GHz</string>
@@ -117,5 +117,8 @@
     <string name="default_channel">Channel: N/N</string>
     <string name="default_networks_on_this_channel">Networks on this channel: N/N</string>
     <string name="default_recommended">Recommended: N/N</string>
+    <string name="title_activity_utility_test">Utility_test</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

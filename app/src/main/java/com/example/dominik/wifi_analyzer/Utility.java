@@ -75,13 +75,21 @@ public class Utility
 
     public static int convertQualityToStepsQuality(int quality, int steps)
     {
-        int a = 100 / steps;
-
-        for (int i = 0; i < steps; i++)
+        if(steps > 0)
         {
-            if(quality >= a * i && quality < a * (i + 1))
+            int a = 100 / steps;
+
+            if(quality == 100)
             {
-                return i + 1;
+                return steps;
+            }
+
+            for (int i = 0; i < steps; i++)
+            {
+                if(quality >= a * i && quality < a * (i + 1))
+                {
+                    return i + 1;
+                }
             }
         }
 
@@ -133,7 +141,7 @@ public class Utility
 
     public static void enableWifi(WifiManager wifiManager)
     {
-        if (wifiManager.isWifiEnabled() == false)
+        if (!wifiManager.isWifiEnabled())
         {
             wifiManager.setWifiEnabled(true);
         }
