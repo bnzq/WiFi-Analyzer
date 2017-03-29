@@ -11,6 +11,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -184,15 +185,15 @@ public class ChannelInterference extends Fragment
         if (connectionInfo.get(SSID_CONNECTED_NETWORK).equals(sNN))
             return;
 
-        viewHolder.valuationProgressBarView.setText(String.format(
-                getResources().getString(R.string.valuation),
-                valuation_percent_recommended[
-                        Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1] / 10
-        ));
+        int index = Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1;
+        Log.d("tak", "updateValuationList: " + index + " / " + valuation_percent_recommended.length);
+        if (index < valuation_percent_recommended.length && index > 0) {
+            viewHolder.valuationProgressBarView.setText(String.format(getResources().getString(R.string.valuation), valuation_percent_recommended[index] / 10));
 
-        viewHolder.valuationProgressBar.setProgress(valuation_percent_recommended[
-                        Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1]
-        );
+            viewHolder.valuationProgressBar.setProgress(valuation_percent_recommended[
+                    Utility.convertFrequencyToChannel(Integer.valueOf(connectionInfo.get(FREQUENCY_CONNECTED_CHANNEL))) - 1]
+            );
+        }
     }
 
     //vevaluation of all bandwidths on the basis of available networks
@@ -387,16 +388,13 @@ public class ChannelInterference extends Fragment
 
     private class WifiChart
     {
-        private XYMultipleSeriesDataset mDataset;
-        private XYMultipleSeriesRenderer mRenderer;
-
-        private GraphicalView mChartView;
-
         private final String LABEL_X = getString(R.string.ci_labelx);
         private final String LABEL_Y = getString(R.string.ci_labely);
         private final List<ScanResult> mWifiScanList;
-
         private final short numberOfChannels;
+        private XYMultipleSeriesDataset mDataset;
+        private XYMultipleSeriesRenderer mRenderer;
+        private GraphicalView mChartView;
 
         public WifiChart(List<ScanResult> wifiScanList, short numberOfChannels)
         {
